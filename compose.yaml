@@ -26,5 +26,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  cache:
+    image: redis:8.10.2-alpine3.23
+    container_name: monolith-cache
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - monolith-cache:/data
 volumes:
   monolith-data:
+  monolith-cache:

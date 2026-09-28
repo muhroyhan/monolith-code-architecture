@@ -8,11 +8,27 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "argon2": "^0.45.1",
+    "compression": "^1.8.2",
+    "connect-redis": "^10.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "errorhandler": "^1.5.2",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "morgan": "^1.12.1",
+    "redis": "^6.2.1",
     "tsx": "^4.23.15"
   },
   "devDependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/connect-redis": "^0.0.23",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/errorhandler": "^1.5.3",
     "@types/express": "^5.0.6",
+    "@types/express-session": "^1.19.0",
+    "@types/morgan": "^1.9.10",
     "tsdown": "^0.23.0",
     "typescript": "^7.0.2"
   }

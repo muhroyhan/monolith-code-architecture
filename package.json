@@ -20,7 +20,7 @@
     "build": "pnpm -r build",
     "db:generate": "pnpm --filter @monolith-code-architecture/api generate",
     "db:migrate": "pnpm --filter @monolith-code-architecture/api migrate",
-    "db:up": "docker compose up -d",
+    "docker:up": "docker compose up -d",
     "fmt": "oxfmt .",
     "fmt:check": "oxfmt --check .",
     "lint": "oxlint . --deny-warnings",

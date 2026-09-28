@@ -2,6 +2,7 @@ import express, { type Response } from 'express'
 import { authRouter } from './modules/auth/auth.router'
 import type { ApiResponseBody } from './types/response'
 import { adminRouter } from './modules/admin/admin.router'
+import { requireAuth } from './middlewares/requireAuth'
 
 const router = () => {
   const appRouter = express.Router()
@@ -13,7 +14,7 @@ const router = () => {
     })
   })
   appRouter.use('/auth', authRouter())
-  appRouter.use('/admin', adminRouter())
+  appRouter.use('/admin', requireAuth, adminRouter())
 
   return appRouter
 }
