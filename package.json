@@ -1,0 +1,46 @@
+{
+  "name": "monolith-code-architecture",
+  "version": "1.0.0",
+  "description": "A monolith code architecture",
+  "homepage": "https://github.com/muhroyhan/monolith-code-architecture#readme",
+  "bugs": {
+    "url": "https://github.com/muhroyhan/monolith-code-architecture/issues"
+  },
+  "author": "muhroyhan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhroyhan/monolith-code-architecture.git"
+  },
+  "type": "module",
+  "scripts": {
+    "api:build": "pnpm --filter @monolith-code-architecture/api build",
+    "api:dev": "pnpm --filter @monolith-code-architecture/api dev",
+    "api:start": "pnpm --filter @monolith-code-architecture/api start",
+    "api:test": "pnpm --filter @monolith-code-architecture/api test",
+    "build": "pnpm -r build",
+    "db:generate": "pnpm --filter @monolith-code-architecture/api generate",
+    "db:migrate": "pnpm --filter @monolith-code-architecture/api migrate",
+    "db:up": "docker compose up -d",
+    "fmt": "oxfmt .",
+    "fmt:check": "oxfmt --check .",
+    "lint": "oxlint . --deny-warnings",
+    "lint:fix": "oxlint . --fix",
+    "typecheck": "pnpm -r typecheck",
+    "verify": "pnpm fmt:check && pnpm lint && pnpm typecheck && pnpm api:test && pnpm build",
+    "web:build": "pnpm --filter @monolith-code-architecture/web build",
+    "web:dev": "pnpm --filter @monolith-code-architecture/web dev",
+    "web:start": "pnpm --filter @monolith-code-architecture/web start"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.4",
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3"
+  },
+  "engines": {
+    "node": ">=24.19.0"
+  },
+  "packageManager": "pnpm@12.6.0+sha512.3ef68f951cb111ac204b4a5a16f0b2ddf0da56a96e0413e81d855d9f0b55ef926714709028e1cd00c405c2c5fb7b9e8ec4dc46777c805d0373c2f2ff00fd20ec"
+}

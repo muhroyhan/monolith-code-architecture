@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "unicorn"],
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/no-children-prop": "off",
+    "react/exhaustive-deps": "off"
+  },
+  "ignorePatterns": [".gen.ts"],
+  "overrides": [
+    {
+      "files": ["apps/api/**/*.ts"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

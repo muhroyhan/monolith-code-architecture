@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "ignorePatterns": ["node_modules", "dist", "build", "coverage", ".vite", ".gen.ts"],
+  "overrides": [
+    {
+      "files": ["apps/web/**/*.{ts,tsx}"],
+      "options": {
+        // Enforce single attributes per line for complex React JSX tags
+        "singleAttributePerLine": true,
+        "jsxSingleQuote": false
+      }
+    },
+    {
+      "files": ["apps/api/**/*.ts"],
+      "options": {
+        // Fallbacks for older CommonJS Express projects if necessary
+        "trailingComma": "es5"
+      }
+    }
+  ]
+}
