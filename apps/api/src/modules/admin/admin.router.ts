@@ -1,18 +1,15 @@
+import { ApiResponseBody } from '@monolith-code-architecture/types'
 import express, { type Request, type Response } from 'express'
-import { ApiResponseBody } from '@/types/response'
+import { adminController } from './admin.controller'
 
 const adminRouter = () => {
   const router = express.Router()
+  const controller = adminController()
 
-  router.get('', (req: Request, res: Response<ApiResponseBody>) => {
-    console.log(req.query)
-    return res.status(200).json({
-      success: true,
-      data: req.query,
-    })
-  })
+  router.get('/', controller.findAll)
+  router.post('/', controller.create)
 
-  router.get(':id', (req: Request, res: Response<ApiResponseBody>) => {
+  router.get('/:id', (req: Request, res: Response<ApiResponseBody>) => {
     console.log(req.params)
     return res.status(200).json({
       success: true,
@@ -20,7 +17,7 @@ const adminRouter = () => {
     })
   })
 
-  router.post('', (req: Request, res: Response<ApiResponseBody>) => {
+  router.patch('/', (req: Request, res: Response<ApiResponseBody>) => {
     console.log(req.body)
     return res.status(200).json({
       success: true,
@@ -28,15 +25,7 @@ const adminRouter = () => {
     })
   })
 
-  router.patch('', (req: Request, res: Response<ApiResponseBody>) => {
-    console.log(req.body)
-    return res.status(200).json({
-      success: true,
-      data: req.body,
-    })
-  })
-
-  router.delete(':id', (req: Request, res: Response<ApiResponseBody>) => {
+  router.delete('/:id', (req: Request, res: Response<ApiResponseBody>) => {
     console.log(req.params)
     return res.status(200).json({
       success: true,

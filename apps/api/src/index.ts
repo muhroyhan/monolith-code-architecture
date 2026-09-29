@@ -10,8 +10,6 @@ import { createClient } from 'redis'
 import { RedisStore } from 'connect-redis'
 import session from 'express-session'
 import { errorHandler } from './middlewares/errorHandler'
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
 
 const app: Express = express()
 
@@ -19,7 +17,7 @@ app.use(
   cors({
     credentials: true,
     origin: process.env.WEB_ORIGIN,
-  })
+  }),
 )
 app.use(express.json())
 app.use(compression())
@@ -43,7 +41,7 @@ app.use(
     name: '__Host-session',
     resave: false,
     saveUninitialized: false,
-  })
+  }),
 )
 
 app.use(morgan('combined'))

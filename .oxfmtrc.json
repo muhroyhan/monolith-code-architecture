@@ -11,18 +11,11 @@
   "ignorePatterns": ["node_modules", "dist", "build", "coverage", ".vite", ".gen.ts"],
   "overrides": [
     {
-      "files": ["apps/web/**/*.{ts,tsx}"],
+      "files": ["apps/api/**/*.ts", "apps/web/**/*.{ts,tsx}", "packages/types/**/*.ts"],
       "options": {
         // Enforce single attributes per line for complex React JSX tags
         "singleAttributePerLine": true,
         "jsxSingleQuote": false
-      }
-    },
-    {
-      "files": ["apps/api/**/*.ts"],
-      "options": {
-        // Fallbacks for older CommonJS Express projects if necessary
-        "trailingComma": "es5"
       }
     }
   ]

@@ -16,3 +16,5 @@ export interface LoginBody {
 export interface LoginResponseData {
   admin: { id: string }
 }
+
+export * from './admin.type'

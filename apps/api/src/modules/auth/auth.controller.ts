@@ -8,7 +8,7 @@ const authController = () => {
   return {
     login: async (
       req: Request<{}, {}, LoginBody>,
-      res: Response<ApiResponseBody<LoginResponseData>>
+      res: Response<ApiResponseBody<LoginResponseData>>,
     ) => {
       const admin = await service.login(req.body)
       req.session.regenerate((err) => {

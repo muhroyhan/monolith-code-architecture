@@ -7,7 +7,7 @@ const errorHandler = (
   err: any,
   _req: Request,
   res: Response<ApiResponseBody>,
-  _next: NextFunction
+  _next: NextFunction,
 ) => {
   const statusCode = err instanceof ApiError ? err.statusCode : 500
   const code = err instanceof ApiError ? err.code : 'INTERNAL_SERVER_ERROR'

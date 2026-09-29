@@ -1,4 +1,4 @@
-import { ApiResponseBody } from '@/types/response'
+import { ApiResponseBody } from '@monolith-code-architecture/types'
 import { type NextFunction, type Request, type Response } from 'express'
 
 const notFoundHandler = (_req: Request, res: Response<ApiResponseBody>, _next: NextFunction) => {

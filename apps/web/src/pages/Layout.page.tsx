@@ -1,10 +1,11 @@
+import { ProgramProvider } from '@/providers/Program.provider'
 import { Outlet } from '@tanstack/react-router'
 
 const LayoutPage = () => {
   return (
-    <div className="bg-gray-100">
+    <ProgramProvider>
       <Outlet />
-    </div>
+    </ProgramProvider>
   )
 }
 
