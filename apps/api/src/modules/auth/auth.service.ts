@@ -1,14 +1,27 @@
 import { LoginBody } from './auth.type'
-import { hash, verify } from 'argon2'
+import { verify } from 'argon2'
 import { ApiError } from '@/classes/ApiError'
+import { dbClient } from '@/db/client'
+import { adminTable } from '@/db/schema/admin.schema'
+import { eq } from 'drizzle-orm/pg-core/expressions'
 
 const authService = () => ({
   login: async (body?: LoginBody) => {
     if (!body) throw new ApiError('Missing body', 403, 'FORBIDDEN')
-    const userPass = await hash('abc')
-    const isVerified = await verify(userPass, body.password)
+    const admins = await dbClient
+      .select({
+        id: adminTable.id,
+        username: adminTable.username,
+        password: adminTable.password,
+      })
+      .from(adminTable)
+      .where(eq(adminTable.username, body.username.toString()))
+      .limit(1)
+    if (!admins) throw new ApiError('Admin not found', 404, 'NOT FOUND')
+    const admin = admins[0]
+    const isVerified = await verify(admin.password, body.password)
     if (!isVerified) throw new ApiError('Not verified', 403, 'FORBIDDEN')
-    return { id: '1' }
+    return { id: admin.id }
   },
 })
 

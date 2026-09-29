@@ -19,7 +19,7 @@ const LoginPage = () => {
   return (
     <div>
       <input
-        onClick={() => mutate({ username: 'abc', password: 'abc' })}
+        onClick={() => mutate({ username: 'admin', password: 'abc' })}
         type="button"
         value="Submit"
       />

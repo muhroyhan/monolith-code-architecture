@@ -2,8 +2,10 @@
   "name": "@monolith-code-architecture/api",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
     "build": "tsdown src/index.ts --format esm --clean",
+    "dev": "tsx watch src/index.ts",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
     "start": "node dist/index.mjs",
     "typecheck": "tsc --noEmit"
   },
@@ -13,12 +15,14 @@
     "connect-redis": "^10.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
+    "dotenv": "^18.0.4",
+    "drizzle-orm": "1.0.0-rc.4",
     "errorhandler": "^1.5.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "morgan": "^1.12.1",
-    "redis": "^6.2.1",
-    "tsx": "^4.23.15"
+    "pg": "^8.23.0",
+    "redis": "^6.2.1"
   },
   "devDependencies": {
     "@types/compression": "^1.8.1",
@@ -29,7 +33,10 @@
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
     "@types/morgan": "^1.9.10",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "1.0.0-rc.4",
     "tsdown": "^0.23.0",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
 }

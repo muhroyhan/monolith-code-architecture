@@ -1,5 +1,5 @@
+import './env.config'
 import express, { type Express } from 'express'
-import dotenv from 'dotenv'
 import { notFoundHandler } from './middlewares/notFoundHandler'
 import { router } from './router'
 import compression from 'compression'
@@ -10,8 +10,8 @@ import { createClient } from 'redis'
 import { RedisStore } from 'connect-redis'
 import session from 'express-session'
 import { errorHandler } from './middlewares/errorHandler'
-
-dotenv.config({ path: '../../.env' })
+import { drizzle } from 'drizzle-orm/node-postgres'
+import { Pool } from 'pg'
 
 const app: Express = express()
 
