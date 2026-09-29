@@ -1,8 +1,8 @@
 import express, { type Response } from 'express'
 import { authRouter } from './modules/auth/auth.router'
-import type { ApiResponseBody } from './types/response'
 import { adminRouter } from './modules/admin/admin.router'
 import { requireAuth } from './middlewares/requireAuth'
+import { ApiResponseBody } from '@monolith-code-architecture/types'
 
 const router = () => {
   const appRouter = express.Router()

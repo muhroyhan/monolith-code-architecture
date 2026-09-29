@@ -1,4 +1,5 @@
 import { logoutMutation } from '@/features/login/login.mutations'
+import { Button } from '@/shadcn/components/ui/button'
 import { useMutation } from '@tanstack/react-query'
 import { Outlet, useLocation, useNavigate } from '@tanstack/react-router'
 import React, { useEffect } from 'react'
@@ -21,11 +22,7 @@ const UserLayoutPage = () => {
     <div>
       UserLayoutPage
       <br />
-      <input
-        onClick={() => mutate()}
-        type="button"
-        value="Logout"
-      />
+      <Button onClick={() => mutate()}>Logout</Button>
       <Outlet />
     </div>
   )

@@ -1,28 +1,24 @@
-import { loginMutation } from '@/features/login/login.mutations'
-import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/shadcn/components/ui/card'
+import { LoginForm } from '@/components/forms/Login.form'
 
 const LoginPage = () => {
-  const navigate = useNavigate()
-  const { isIdle, isSuccess, mutate } = useMutation(loginMutation)
-
-  useEffect(() => {
-    if (!isIdle && isSuccess) {
-      navigate({
-        from: '/login',
-        to: '/',
-      })
-    }
-  }, [isIdle, isSuccess])
-
   return (
-    <div>
-      <input
-        onClick={() => mutate({ username: 'admin', password: 'abc' })}
-        type="button"
-        value="Submit"
-      />
+    <div className="h-screen flex items-center justify-center">
+      <Card className="text-center w-md">
+        <CardHeader>
+          <CardTitle className="text-4xl">Login</CardTitle>
+          <CardDescription className="text-xl">This is Monolith Architecture</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <LoginForm />
+        </CardContent>
+      </Card>
     </div>
   )
 }

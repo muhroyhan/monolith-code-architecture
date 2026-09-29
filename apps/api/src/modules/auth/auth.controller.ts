@@ -1,13 +1,15 @@
 import { type Request, type Response } from 'express'
-import { ApiResponseBody } from '@/types/response'
-import { LoginBody } from './auth.type'
 import { authService } from './auth.service'
 import { ApiError } from '@/classes/ApiError'
+import { ApiResponseBody, LoginBody, LoginResponseData } from '@monolith-code-architecture/types'
 
 const authController = () => {
   const service = authService()
   return {
-    login: async (req: Request<{}, {}, LoginBody>, res: Response<ApiResponseBody>) => {
+    login: async (
+      req: Request<{}, {}, LoginBody>,
+      res: Response<ApiResponseBody<LoginResponseData>>
+    ) => {
       const admin = await service.login(req.body)
       req.session.regenerate((err) => {
         if (err) throw new ApiError('FORBIDDEN', 403)

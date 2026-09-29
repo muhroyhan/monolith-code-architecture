@@ -1,7 +1,7 @@
 // middleware/errorMiddleware.ts
 import { NextFunction, Request, Response } from 'express'
-import { ApiResponseBody } from '../types/response'
 import { ApiError } from '@/classes/ApiError'
+import { ApiResponseBody } from '@monolith-code-architecture/types'
 
 const errorHandler = (
   err: any,

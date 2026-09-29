@@ -1,9 +1,19 @@
-import axios, { type ResponseType } from 'axios'
+import axios, { AxiosError, type ResponseType } from 'axios'
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 })
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      console.warn('Unauthorized! Redirecting...')
+    }
+    return Promise.reject(error)
+  },
+)
 
 export const get = <T>(url: string, params?: object, responseType?: ResponseType) =>
   axiosInstance.get<T>(url, {

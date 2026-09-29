@@ -2,8 +2,7 @@ import { Outlet } from '@tanstack/react-router'
 
 const LayoutPage = () => {
   return (
-    <div>
-      LayoutPage
+    <div className="bg-gray-100">
       <Outlet />
     </div>
   )
