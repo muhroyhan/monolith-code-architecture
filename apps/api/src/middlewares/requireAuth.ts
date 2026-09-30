@@ -3,6 +3,7 @@ import { type Request, type Response } from 'express'
 import type { RequestHandler } from 'express'
 
 const requireAuth: RequestHandler = (req: Request, res: Response<ApiResponseBody>, next) => {
+  console.log(req.session)
   if (!req.session.adminId) {
     res.status(401).json({
       success: false,

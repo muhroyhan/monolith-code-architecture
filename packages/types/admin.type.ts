@@ -1,13 +1,15 @@
+export interface AdminData {
+  id: string
+  username: string
+  isActive: boolean
+  isSuper: boolean
+  isDeleted: boolean
+  updatedAt: Date
+  updatedBy: string | null
+}
+
 export interface AdminDataResponse {
-  admins: {
-    id: string
-    username: string
-    isActive: boolean
-    isSuper: boolean
-    isDeleted: boolean
-    updatedAt: Date
-    updatedBy: string | null
-  }[]
+  admins: AdminData[]
 }
 
 export interface AdminQueryRequest {

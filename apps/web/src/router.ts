@@ -7,6 +7,7 @@ import { NotFoundPage } from './pages/NotFound.page'
 import { FeaturePage } from './pages/Feature.page'
 import { AddEditPage } from './pages/AddEdit.page'
 import { ViewPage } from './pages/View.page'
+import { Feature } from './types'
 
 const rootRoute = createRootRoute({
   component: LayoutPage,
@@ -30,6 +31,10 @@ const routeTree = rootRoute.addChildren([
     createRoute({
       getParentRoute: () => userLayoutRouter,
       path: '$feature',
+      validateSearch: (search) =>
+        search as {
+          [K in keyof Feature]?: Feature[K]['queryparam']
+        },
       component: FeaturePage,
     }),
     createRoute({

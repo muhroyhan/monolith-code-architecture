@@ -10,6 +10,7 @@ import { createClient } from 'redis'
 import { RedisStore } from 'connect-redis'
 import session from 'express-session'
 import { errorHandler } from './middlewares/errorHandler'
+import { cookieConfig, cookieSessionName } from './constants/cookie.constant'
 
 const app: Express = express()
 
@@ -38,9 +39,10 @@ app.use(
   session({
     store: redisStore,
     secret: process.env.SESSION_SECRET,
-    name: '__Host-session',
+    name: cookieSessionName,
     resave: false,
     saveUninitialized: false,
+    cookie: cookieConfig,
   }),
 )
 

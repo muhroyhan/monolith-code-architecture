@@ -1,13 +1,16 @@
 import { programs } from '@/programs'
-import { ProgramRegistary } from '@/types'
+import { Feature, ProgramRegistary } from '@/types'
 import { useLocation } from '@tanstack/react-router'
 import { createContext, ReactNode, useContext } from 'react'
 
-const ProgramContext = createContext<{ program?: ProgramRegistary | undefined }>({})
+const ProgramContext = createContext<{ program: ProgramRegistary<keyof Feature> | undefined }>({
+  program: undefined,
+})
 
 const ProgramProvider = ({ children }: { children: ReactNode }) => {
   const location = useLocation()
-  const program = programs.find((program) => location.pathname.includes(program.path))
+  const feature = location.pathname.replace('/', '') as keyof Feature
+  const program = programs[feature]
   return <ProgramContext value={{ program }}>{children}</ProgramContext>
 }
 

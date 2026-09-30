@@ -1,7 +1,13 @@
-import { ProgramRegistary } from './types'
+import { Feature, ProgramRegistary } from './types'
 
-const programs: ProgramRegistary[] = [
-  { api: '/admin', isReadAllowed: true, isWriteAllowed: true, path: '/admin' },
-]
+const programs: { [K in keyof Feature]: ProgramRegistary<K> } = {
+  admin: {
+    feature: 'admin',
+    api: '/admin',
+    isReadAllowed: true,
+    isWriteAllowed: true,
+    path: '/admin',
+  },
+}
 
 export { programs }

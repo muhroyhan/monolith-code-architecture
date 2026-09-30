@@ -2,6 +2,7 @@ import { type Request, type Response } from 'express'
 import { authService } from './auth.service'
 import { ApiError } from '@/classes/ApiError'
 import { ApiResponseBody, LoginBody, LoginResponseData } from '@monolith-code-architecture/types'
+import { cookieConfig, cookieSessionName } from '@/constants/cookie.constant'
 
 const authController = () => {
   const service = authService()
@@ -26,12 +27,7 @@ const authController = () => {
     logout: async (req: Request, res: Response<ApiResponseBody>) => {
       req.session.destroy((err) => {
         if (err) throw new ApiError(err, 400, 'ERROR')
-        res.clearCookie('__Host-session', {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-        })
+        res.clearCookie(cookieSessionName, cookieConfig)
         res.status(200).send({ success: true })
       })
     },

@@ -1,5 +1,6 @@
 import { useProgram } from '@/providers/Program.provider'
 import { NotFoundPage } from './NotFound.page'
+import FeatureComponent from '@/components/Feature.component'
 
 const FeaturePage = () => {
   const { program } = useProgram()
@@ -7,7 +8,7 @@ const FeaturePage = () => {
   return (
     <>
       {(!program || !program.isReadAllowed) && <NotFoundPage />}
-      {program && program.isReadAllowed && <div>Feature</div>}
+      {program && program.isReadAllowed && <FeatureComponent {...program} />}
     </>
   )
 }

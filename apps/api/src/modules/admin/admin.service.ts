@@ -16,7 +16,8 @@ const adminService = () => ({
     if (!!query.isDeleted) where.push(eq(adminTable.isDeleted, query.isDeleted))
     else where.push(eq(adminTable.isDeleted, false))
     if (!!query.isActive) where.push(eq(adminTable.isActive, query.isActive))
-    if (!!query.username) where.push(ilike(adminTable.username, query.username))
+    if (!!query.isSuper) where.push(eq(adminTable.isSuper, query.isSuper))
+    if (!!query.username) where.push(ilike(adminTable.username, `%${query.username}%`))
     return and(...where)
   },
   findAll: async (query?: SQL): Promise<AdminDataResponse['admins']> => {
