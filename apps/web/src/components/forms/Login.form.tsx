@@ -7,7 +7,6 @@ import * as z from 'zod'
 import { Label } from '@/shadcn/components/ui/label'
 import { Input } from '@/shadcn/components/ui/input'
 import { Button } from '@/shadcn/components/ui/button'
-import { LoginBody } from '@monolith-code-architecture/types'
 
 const loginRequestBodySchema = z.object({
   username: z.string(),
@@ -19,7 +18,10 @@ const LoginForm = () => {
   const { isIdle, isSuccess, mutate: login } = useMutation(loginMutation)
 
   const form = useForm({
-    defaultValues: {} as LoginBody,
+    defaultValues: {
+      username: '',
+      password: '',
+    },
     validators: {
       onSubmit: loginRequestBodySchema,
     },

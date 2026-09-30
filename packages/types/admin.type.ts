@@ -17,8 +17,8 @@ export interface AdminQueryRequest {
 export interface AdminCreateBodyRequest {
   password: string
   username: string
-  isActive: boolean
-  isSuper: boolean
+  isActive: string
+  isSuper: string
 }
 
 export interface AdminUpdateBodyRequest {

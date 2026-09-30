@@ -16,56 +16,50 @@ const BreadcrumbComponent = (props: { paths: string[] }) => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {paths.map((item, key) => {
-          if (key === paths.length - 1 && ['edit', 'view'].includes(paths[key - 1]))
-            return undefined
-          if (item.length === 0) {
-            return (
-              <>
-                <BreadcrumbItem key={key}>
+        {paths.reduce<React.JSX.Element[]>((jsxs, item, key) => {
+          if (key === paths.length - 1 && ['edit', 'view'].includes(paths[key - 1])) {
+            return jsxs
+          } else if (item.length === 0) {
+            jsxs.push(
+              <BreadcrumbItem key={key}>
+                <BreadcrumbLink asChild>
+                  <Link to="/">Dashboard</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>,
+            )
+            jsxs.push(<BreadcrumbSeparator key={key + 's'} />)
+          } else if (`/${item}` === program?.path) {
+            jsxs.push(
+              <BreadcrumbItem key={key}>
+                {key === paths.length - 1 && <BreadcrumbPage>{program.name}</BreadcrumbPage>}
+                {key !== paths.length - 1 && (
                   <BreadcrumbLink asChild>
-                    <Link to="/">Dashboard</Link>
+                    <Link to={program.path}>{program.name}</Link>
                   </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-              </>
+                )}
+              </BreadcrumbItem>,
             )
-          }
-          if (`/${item}` === program?.path) {
-            return (
-              <>
-                <BreadcrumbItem key={key}>
-                  {key === paths.length - 1 && <BreadcrumbPage>{program.name}</BreadcrumbPage>}
-                  {key !== paths.length - 1 && (
-                    <BreadcrumbLink asChild>
-                      <Link to={program.path}>{program.name}</Link>
-                    </BreadcrumbLink>
-                  )}
-                </BreadcrumbItem>
-                {key !== paths.length - 1 && <BreadcrumbSeparator />}
-              </>
-            )
-          }
-          if (['add', 'edit', 'view'].includes(item)) {
-            return (
+            if (key !== paths.length - 1) jsxs.push(<BreadcrumbSeparator key={key + 's'} />)
+          } else if (['add', 'edit', 'view'].includes(item)) {
+            jsxs.push(
               <BreadcrumbItem key={key}>
                 <BreadcrumbPage>
                   {startCase(item)} {item !== 'add' && `(${paths[key + 1]})`}
                 </BreadcrumbPage>
-              </BreadcrumbItem>
+              </BreadcrumbItem>,
             )
-          }
-          return (
-            <>
+          } else {
+            jsxs.push(
               <BreadcrumbItem key={key}>
                 <BreadcrumbLink asChild>
                   <Link to={paths.slice(0, key).join('/')}>{startCase(item)}</Link>
                 </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-            </>
-          )
-        })}
+              </BreadcrumbItem>,
+            )
+            jsxs.push(<BreadcrumbSeparator key={key + 's'} />)
+          }
+          return jsxs
+        }, [])}
       </BreadcrumbList>
     </Breadcrumb>
   )

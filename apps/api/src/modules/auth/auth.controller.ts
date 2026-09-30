@@ -14,7 +14,7 @@ const authController = () => {
       const admin = await service.login(req.body)
       req.session.regenerate((err) => {
         if (err) throw new ApiError('FORBIDDEN', 403)
-        req.session.adminId = admin.id
+        req.session.username = admin.username
         req.session.save((saveErr) => {
           if (saveErr) throw new ApiError(saveErr, 403, 'FORBIDDEN')
           res.status(200).json({

@@ -10,7 +10,6 @@ const authService = () => ({
     if (!body) throw new ApiError('Missing body', 403, 'FORBIDDEN')
     const admins = await dbClient
       .select({
-        id: adminTable.id,
         username: adminTable.username,
         password: adminTable.password,
       })
@@ -21,7 +20,7 @@ const authService = () => ({
     const admin = admins[0]
     const isVerified = await verify(admin.password, body.password)
     if (!isVerified) throw new ApiError('Not verified', 403, 'FORBIDDEN')
-    return { id: admin.id }
+    return { username: admin.username }
   },
 })
 

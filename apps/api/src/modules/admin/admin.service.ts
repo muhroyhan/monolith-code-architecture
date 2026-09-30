@@ -1,13 +1,10 @@
 import { dbClient } from '@/db/client'
 import { adminTable } from '@/db/schema'
-import {
-  AdminCreateBodyRequest,
-  AdminData,
-  AdminQueryRequest,
-} from '@monolith-code-architecture/types'
+import { AdminData, AdminQueryRequest } from '@monolith-code-architecture/types'
 import { hash } from 'argon2'
 import { isNotNull, isNull, SQL } from 'drizzle-orm'
 import { and, eq, ilike } from 'drizzle-orm/pg-core/expressions'
+import { AdminServiceCreateBody } from './admin.type'
 
 const adminService = () => ({
   getWhere: (query?: AdminQueryRequest): SQL | undefined => {
@@ -34,7 +31,7 @@ const adminService = () => ({
       .where(query)
     return admins
   },
-  create: async (body: AdminCreateBodyRequest) => {
+  create: async (body: AdminServiceCreateBody) => {
     const hashedPass = await hash(body.password)
     await dbClient.insert(adminTable).values({
       ...body,

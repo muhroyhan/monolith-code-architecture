@@ -23,7 +23,13 @@ const adminController = () => {
       req: Request<{}, {}, AdminCreateBodyRequest>,
       res: Response<ApiResponseBody>,
     ) => {
-      await service.create(req.body)
+      await service.create({
+        ...req.body,
+        isActive: Boolean(req.body.isActive),
+        isSuper: Boolean(req.body.isSuper),
+        createdBy: req.session.username ?? '',
+        updatedBy: req.session.username ?? '',
+      })
       res.status(200).send({ success: true })
     },
   }

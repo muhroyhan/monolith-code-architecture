@@ -40,7 +40,9 @@ const FeatureComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
         ))}
       </TableRow>
     ))
+
   const columnValues = Object.values(props.columns)
+
   return (
     <Table>
       <TableHeader>
