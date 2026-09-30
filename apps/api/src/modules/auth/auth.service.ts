@@ -3,10 +3,10 @@ import { ApiError } from '@/classes/ApiError'
 import { dbClient } from '@/db/client'
 import { adminTable } from '@/db/schema/admin.schema'
 import { eq } from 'drizzle-orm/pg-core/expressions'
-import { LoginBody, LoginResponseData } from '@monolith-code-architecture/types'
+import { LoginBody, LoginDataResponse } from '@monolith-code-architecture/types'
 
 const authService = () => ({
-  login: async (body?: LoginBody): Promise<LoginResponseData['admin']> => {
+  login: async (body?: LoginBody): Promise<LoginDataResponse['admin']> => {
     if (!body) throw new ApiError('Missing body', 403, 'FORBIDDEN')
     const admins = await dbClient
       .select({

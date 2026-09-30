@@ -13,8 +13,12 @@ export interface LoginBody {
   password: string
 }
 
-export interface LoginResponseData {
+export interface LoginDataResponse {
   admin: { id: string }
+}
+
+export interface TableDataResponse<T> {
+  dataFeeds: T[]
 }
 
 export * from './admin.type'

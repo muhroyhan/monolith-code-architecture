@@ -3,13 +3,8 @@ export interface AdminData {
   username: string
   isActive: boolean
   isSuper: boolean
-  isDeleted: boolean
   updatedAt: Date
   updatedBy: string | null
-}
-
-export interface AdminDataResponse {
-  admins: AdminData[]
 }
 
 export interface AdminQueryRequest {

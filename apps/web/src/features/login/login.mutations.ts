@@ -1,12 +1,12 @@
 import { post } from '@/api/client'
 import { mutationOptions } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { LoginBody, LoginResponseData } from '@monolith-code-architecture/types'
+import { LoginBody, LoginDataResponse } from '@monolith-code-architecture/types'
 import { toast } from 'sonner'
 
-export const loginMutation = mutationOptions<LoginResponseData, AxiosError, LoginBody>({
+export const loginMutation = mutationOptions<LoginDataResponse, AxiosError, LoginBody>({
   mutationFn: async (data) => {
-    const response = await post<LoginResponseData>('/auth/login', data)
+    const response = await post<LoginDataResponse>('/auth/login', data)
     return response.data
   },
   onSuccess: (data) => {

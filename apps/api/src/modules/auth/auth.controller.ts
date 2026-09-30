@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import { authService } from './auth.service'
 import { ApiError } from '@/classes/ApiError'
-import { ApiResponseBody, LoginBody, LoginResponseData } from '@monolith-code-architecture/types'
+import { ApiResponseBody, LoginBody, LoginDataResponse } from '@monolith-code-architecture/types'
 import { cookieConfig, cookieSessionName } from '@/constants/cookie.constant'
 
 const authController = () => {
@@ -9,7 +9,7 @@ const authController = () => {
   return {
     login: async (
       req: Request<{}, {}, LoginBody>,
-      res: Response<ApiResponseBody<LoginResponseData>>,
+      res: Response<ApiResponseBody<LoginDataResponse>>,
     ) => {
       const admin = await service.login(req.body)
       req.session.regenerate((err) => {
