@@ -4,7 +4,6 @@ import FeatureComponent from '@/components/Feature.component'
 
 const FeaturePage = () => {
   const { program } = useProgram()
-
   return (
     <>
       {(!program || !program.isReadAllowed) && <NotFoundPage />}

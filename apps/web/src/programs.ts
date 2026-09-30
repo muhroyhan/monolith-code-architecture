@@ -8,6 +8,7 @@ const programs: { [K in keyof Feature]: ProgramRegistary<K> } = {
     columns: adminColumns,
     dataFormat: adminDataFeedFormat,
     feature: 'admin',
+    name: 'Admin',
     isReadAllowed: true,
     isWriteAllowed: true,
     path: '/admin',

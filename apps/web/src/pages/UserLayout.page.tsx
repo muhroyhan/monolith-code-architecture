@@ -2,7 +2,8 @@ import { logoutMutation } from '@/features/login/login.mutations'
 import { Button } from '@/shadcn/components/ui/button'
 import { useMutation } from '@tanstack/react-query'
 import { Outlet, useLocation, useNavigate } from '@tanstack/react-router'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+import { BreadcrumbComponent } from '@/components/Breadcrumb.component'
 
 const UserLayoutPage = () => {
   const location = useLocation()
@@ -17,11 +18,11 @@ const UserLayoutPage = () => {
       })
     }
   }, [isIdle, isSuccess])
+  const paths = [...new Set(location.pathname.split('/'))]
 
   return (
     <div>
-      UserLayoutPage
-      <br />
+      {paths.length > 1 && <BreadcrumbComponent paths={paths} />}
       <Button onClick={() => mutate()}>Logout</Button>
       <Outlet />
     </div>

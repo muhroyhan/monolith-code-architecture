@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "dotenv": "^18.0.4",
+    "es-toolkit": "^1.52.0",
     "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0"
   },

@@ -17,5 +17,6 @@ export interface ProgramRegistary<K extends keyof Feature> {
   feature: K
   isReadAllowed: boolean
   isWriteAllowed: boolean
+  name: string
   path: string
 }
