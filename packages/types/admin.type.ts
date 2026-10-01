@@ -22,10 +22,9 @@ export interface AdminCreateBodyRequest {
 }
 
 export interface AdminUpdateBodyRequest {
-  id: string
-  password?: string
-  username?: string
-  isActive?: boolean
-  isSuper?: boolean
-  isDeleted?: boolean
+  password: string
+  username: string
+  isActive: string
+  isSuper: string
+  isDeleted: string
 }

@@ -7,23 +7,9 @@ const adminRouter = () => {
   const controller = adminController()
 
   router.get('/', controller.findAll)
+  router.get('/:id', controller.findOne)
   router.post('/', controller.create)
-
-  router.get('/:id', (req: Request, res: Response<ApiResponseBody>) => {
-    console.log(req.params)
-    return res.status(200).json({
-      success: true,
-      data: req.params,
-    })
-  })
-
-  router.patch('/', (req: Request, res: Response<ApiResponseBody>) => {
-    console.log(req.body)
-    return res.status(200).json({
-      success: true,
-      data: req.body,
-    })
-  })
+  router.patch('/:id', controller.update)
 
   router.delete('/:id', (req: Request, res: Response<ApiResponseBody>) => {
     console.log(req.params)

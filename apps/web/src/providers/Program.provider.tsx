@@ -1,6 +1,6 @@
 import { programs } from '@/programs'
 import { Feature, ProgramRegistary } from '@/types'
-import { useParams } from '@tanstack/react-router'
+import { useLocation, useParams } from '@tanstack/react-router'
 import { createContext, ReactNode, useContext } from 'react'
 
 const ProgramContext = createContext<{ program: ProgramRegistary<keyof Feature> | undefined }>({
@@ -8,8 +8,9 @@ const ProgramContext = createContext<{ program: ProgramRegistary<keyof Feature> 
 })
 
 const ProgramProvider = ({ children }: { children: ReactNode }) => {
+  const location = useLocation()
   const { feature } = useParams({ strict: false })
-  const program = programs[feature as keyof Feature]
+  const program = programs(location)[feature as keyof Feature]
   return <ProgramContext value={{ program }}>{children}</ProgramContext>
 }
 

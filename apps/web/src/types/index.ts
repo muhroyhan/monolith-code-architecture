@@ -11,9 +11,9 @@ export interface Feature {
   admin: {
     data: AdminData
     queryparam: AdminQueryRequest
-    dataFeeds: AdminListData
+    dataFeed: AdminListData
     createBody: AdminCreateBodyRequest
-    updateBody: AdminUpdateBodyRequest
+    updateBody: Partial<AdminUpdateBodyRequest>
   }
 }
 
@@ -25,7 +25,8 @@ export interface ProgramRegistary<K extends keyof Feature> {
   }
   api: string
   columns: { [P in keyof Feature[K]['data']]: string }
-  dataFormat: (data: Feature[K]['data']) => Feature[K]['dataFeeds']
+  updateFormat: (data: Feature[K]['data']) => Feature[K]['updateBody']
+  dataFormat: (data: Feature[K]['data']) => Feature[K]['dataFeed']
   feature: K
   isReadAllowed: boolean
   isWriteAllowed: boolean

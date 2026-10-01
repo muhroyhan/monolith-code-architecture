@@ -1,49 +1,61 @@
-import { post } from '@/api/client'
+import { get } from '@/api/client'
+import { useFeatureMutation } from '@/hooks/use_feature_mutation'
 import { Button } from '@/shadcn/components/ui/button'
 import { Input } from '@/shadcn/components/ui/input'
 import { Label } from '@/shadcn/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/shadcn/components/ui/toggle-group'
 import { Feature, ProgramRegistary } from '@/types'
+import { differenceByObject } from '@/utils/difference_by_object'
+import { ApiResponseBody } from '@monolith-code-architecture/types'
 import { useForm } from '@tanstack/react-form'
-import { useMutation } from '@tanstack/react-query'
-import { useLocation, useNavigate } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+import { useLocation, useNavigate, useParams } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { toast } from 'sonner'
 
 const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) => {
+  const { id } = useParams({ strict: false })
   const location = useLocation()
   const navigate = useNavigate()
-  const {
-    isIdle: isIdleCreate,
-    isSuccess: isIdleSuccess,
-    mutate: create,
-  } = useMutation<void, Error, Feature[K]['createBody']>({
-    mutationFn: async (data) => {
-      await post(props.api, data)
-    },
-    onSuccess: () => {
-      toast.success('Create Successful!')
-    },
-  })
+  const isAddPage = location.pathname.includes('add')
+  type CreateBodyType = Feature[K]['createBody']
+  type UpdateBodyType = Feature[K]['updateBody']
+
+  const getUpdateUrl = props.api + '/' + id
+  const apiUrl = isAddPage ? props.api : getUpdateUrl
+
+  const { isIdle, isSuccess, mutate } = useFeatureMutation(apiUrl, isAddPage)
+
+  let defaultValues: CreateBodyType | UpdateBodyType = props.add.defaultValues
+  if (!isAddPage) {
+    const { data } = useQuery({
+      queryKey: [props.api, 'findOne', id],
+      queryFn: async () => {
+        const res = await get<ApiResponseBody<Feature[K]['data']>>(getUpdateUrl)
+        return props.updateFormat(res?.data?.data ?? ({} as Feature[K]['data']))
+      },
+    })
+    if (data) defaultValues = data
+  }
 
   const form = useForm({
-    defaultValues: props.add.defaultValues,
+    defaultValues,
     validators: {
       onSubmit: props.add.schema,
     },
     onSubmit: async ({ value }) => {
-      create(value)
+      const changedValues = differenceByObject(defaultValues, value)
+      mutate(changedValues)
     },
   })
 
   useEffect(() => {
-    if (!isIdleCreate && isIdleSuccess) {
+    if (!isIdle && isSuccess) {
       navigate({
         from: location.pathname,
         to: props.path,
       })
     }
-  }, [isIdleCreate, isIdleSuccess])
+  }, [isIdle, isSuccess])
 
   return (
     <form
@@ -94,7 +106,7 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
                     field.handleChange(e.target.value as any)
                   }}
                   placeholder="Enter Text..."
-                  required
+                  required={item.required}
                   type={item.type}
                   value={String(field.state.value)}
                 />

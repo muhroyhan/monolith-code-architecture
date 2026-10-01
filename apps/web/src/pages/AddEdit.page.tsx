@@ -4,6 +4,7 @@ import AddEditComponent from '@/components/AddEdit.component'
 
 const AddEditPage = () => {
   const { program } = useProgram()
+
   return (
     <>
       {(!program || !program.isReadAllowed || !program.isWriteAllowed) && <NotFoundPage />}

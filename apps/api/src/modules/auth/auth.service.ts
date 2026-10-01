@@ -12,12 +12,16 @@ const authService = () => ({
       .select({
         username: adminTable.username,
         password: adminTable.password,
+        isActive: adminTable.isActive,
+        deletedAt: adminTable.deletedAt,
       })
       .from(adminTable)
       .where(eq(adminTable.username, body.username.toString()))
       .limit(1)
     if (!admins || admins.length < 1) throw new ApiError('Admin not found', 404, 'NOT FOUND')
     const admin = admins[0]
+    if (!admin.isActive) throw new ApiError('Admin not activated', 403, 'FORBIDDEN')
+    if (!!admin.deletedAt) throw new ApiError('Admin was deleted', 410, 'GONE')
     const isVerified = await verify(admin.password, body.password)
     if (!isVerified) throw new ApiError('Not verified', 403, 'FORBIDDEN')
     return { username: admin.username }

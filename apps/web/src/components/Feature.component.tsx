@@ -20,17 +20,17 @@ const FeatureComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
   const query = search as Feature[K]['queryparam']
 
   type DataFeature = Feature[K]['data']
-  type DataFeedsFeature = Feature[K]['dataFeeds']
+  type dataFeedFeature = Feature[K]['dataFeed']
 
   const { data, isLoading } = useQuery({
     queryKey: [props.api, 'findall', query],
     queryFn: async () => {
       const response = await get<ApiResponseBody<TableDataResponse<DataFeature>>>(props.api, query)
-      return response?.data?.data?.dataFeeds
+      return response?.data?.data?.dataFeed
     },
   })
 
-  const columnKeys = Object.keys(props.columns) as Array<keyof DataFeedsFeature>
+  const columnKeys = Object.keys(props.columns) as Array<keyof dataFeedFeature>
 
   const body = (data: DataFeature[]) =>
     data.map((item, key) => (

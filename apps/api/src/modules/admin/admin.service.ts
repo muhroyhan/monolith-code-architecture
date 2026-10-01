@@ -1,10 +1,9 @@
 import { dbClient } from '@/db/client'
 import { adminTable } from '@/db/schema'
 import { AdminData, AdminQueryRequest } from '@monolith-code-architecture/types'
-import { hash } from 'argon2'
 import { isNotNull, isNull, SQL } from 'drizzle-orm'
 import { and, eq, ilike } from 'drizzle-orm/pg-core/expressions'
-import { AdminServiceCreateBody } from './admin.type'
+import { AdminServiceCreateBody, AdminServiceUpdateBody } from './admin.type'
 
 const adminService = () => ({
   getWhere: (query?: AdminQueryRequest): SQL | undefined => {
@@ -31,12 +30,26 @@ const adminService = () => ({
       .where(query)
     return admins
   },
+  findOne: async (id: string): Promise<AdminData | object> => {
+    const admins = await dbClient
+      .select({
+        id: adminTable.id,
+        username: adminTable.username,
+        isActive: adminTable.isActive,
+        isSuper: adminTable.isSuper,
+        updatedAt: adminTable.updatedAt,
+        updatedBy: adminTable.updatedBy,
+      })
+      .from(adminTable)
+      .where(eq(adminTable.id, id))
+      .limit(1)
+    return admins ? admins[0] : {}
+  },
   create: async (body: AdminServiceCreateBody) => {
-    const hashedPass = await hash(body.password)
-    await dbClient.insert(adminTable).values({
-      ...body,
-      password: hashedPass,
-    })
+    await dbClient.insert(adminTable).values(body)
+  },
+  update: async (id: string, body: Partial<AdminServiceUpdateBody>) => {
+    await dbClient.update(adminTable).set(body).where(eq(adminTable.id, id))
   },
 })
 

@@ -1,4 +1,4 @@
-import { AdminData } from '@monolith-code-architecture/types'
+import { AdminData, AdminUpdateBodyRequest } from '@monolith-code-architecture/types'
 import { AdminListData } from './admin.type'
 
 export const adminColumns = {
@@ -18,5 +18,14 @@ export const adminDataFeedFormat = (data: AdminData): AdminListData => {
     isSuper: data.isSuper ? 'YES' : 'NO',
     updatedAt: data.updatedAt,
     updatedBy: data.updatedBy,
+  }
+}
+
+export const adminUpdateFormat = (data: AdminData): Partial<AdminUpdateBodyRequest> => {
+  return {
+    username: data?.username ?? '',
+    password: '',
+    isActive: String(data.isActive),
+    isSuper: String(data.isSuper),
   }
 }

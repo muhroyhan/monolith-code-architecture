@@ -18,7 +18,7 @@ export interface LoginDataResponse {
 }
 
 export interface TableDataResponse<T> {
-  dataFeeds: T[]
+  dataFeed: T[]
 }
 
 export * from './admin.type'

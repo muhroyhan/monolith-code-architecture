@@ -1,8 +1,11 @@
-import { adminColumns, adminDataFeedFormat } from './features/admin/admin.table'
+import { ParsedLocation } from '@tanstack/react-router'
+import { adminColumns, adminDataFeedFormat, adminUpdateFormat } from './features/admin/admin.table'
 import { addAdminSchema } from './features/admin/admin.type'
 import { Feature, ProgramRegistary } from './types'
 
-const programs: { [K in keyof Feature]: ProgramRegistary<K> } = {
+const programs: (location: ParsedLocation) => { [K in keyof Feature]: ProgramRegistary<K> } = (
+  location,
+) => ({
   admin: {
     add: {
       defaultValues: {
@@ -22,7 +25,7 @@ const programs: { [K in keyof Feature]: ProgramRegistary<K> } = {
         {
           name: 'password',
           type: 'password',
-          required: true,
+          required: location.pathname.includes('add'),
           title: 'Password',
         },
         {
@@ -62,12 +65,13 @@ const programs: { [K in keyof Feature]: ProgramRegistary<K> } = {
     api: '/admin',
     columns: adminColumns,
     dataFormat: adminDataFeedFormat,
+    updateFormat: adminUpdateFormat,
     feature: 'admin',
     name: 'Admin',
     isReadAllowed: true,
     isWriteAllowed: true,
     path: '/admin',
   },
-}
+})
 
 export { programs }
