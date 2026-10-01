@@ -18,3 +18,8 @@ export interface AdminServiceUpdateBody extends Omit<
   isDeleted: boolean
   updatedBy: string
 }
+
+export interface AdminServiceDeleteBody {
+  deletedAt: Date
+  deletedBy: string
+}

@@ -1,5 +1,4 @@
-import { ApiResponseBody } from '@monolith-code-architecture/types'
-import express, { type Request, type Response } from 'express'
+import express from 'express'
 import { adminController } from './admin.controller'
 
 const adminRouter = () => {
@@ -10,14 +9,7 @@ const adminRouter = () => {
   router.get('/:id', controller.findOne)
   router.post('/', controller.create)
   router.patch('/:id', controller.update)
-
-  router.delete('/:id', (req: Request, res: Response<ApiResponseBody>) => {
-    console.log(req.params)
-    return res.status(200).json({
-      success: true,
-      data: req.params,
-    })
-  })
+  router.delete('/:id', controller.delete)
 
   return router
 }

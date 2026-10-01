@@ -3,7 +3,11 @@ import { adminTable } from '@/db/schema'
 import { AdminData, AdminQueryRequest } from '@monolith-code-architecture/types'
 import { isNotNull, isNull, SQL } from 'drizzle-orm'
 import { and, eq, ilike } from 'drizzle-orm/pg-core/expressions'
-import { AdminServiceCreateBody, AdminServiceUpdateBody } from './admin.type'
+import {
+  AdminServiceCreateBody,
+  AdminServiceDeleteBody,
+  AdminServiceUpdateBody,
+} from './admin.type'
 
 const adminService = () => ({
   getWhere: (query?: AdminQueryRequest): SQL | undefined => {
@@ -49,6 +53,9 @@ const adminService = () => ({
     await dbClient.insert(adminTable).values(body)
   },
   update: async (id: string, body: Partial<AdminServiceUpdateBody>) => {
+    await dbClient.update(adminTable).set(body).where(eq(adminTable.id, id))
+  },
+  delete: async (id: string, body: AdminServiceDeleteBody) => {
     await dbClient.update(adminTable).set(body).where(eq(adminTable.id, id))
   },
 })

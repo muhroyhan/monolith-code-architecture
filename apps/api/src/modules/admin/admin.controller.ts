@@ -67,6 +67,13 @@ const adminController = () => {
       await service.update(req.params.id, body)
       res.status(200).send({ success: true })
     },
+    delete: async (req: Request<{ id: string }>, res: Response<ApiResponseBody>) => {
+      await service.delete(req.params.id, {
+        deletedAt: new Date(),
+        deletedBy: req.session.username || '',
+      })
+      res.status(200).send({ success: true })
+    },
   }
 }
 
