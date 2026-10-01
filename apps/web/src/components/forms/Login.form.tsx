@@ -7,6 +7,7 @@ import * as z from 'zod'
 import { Label } from '@/shadcn/components/ui/label'
 import { Input } from '@/shadcn/components/ui/input'
 import { Button } from '@/shadcn/components/ui/button'
+import { useUser } from '@/providers/User.provider'
 
 const loginRequestBodySchema = z.object({
   username: z.string(),
@@ -16,6 +17,7 @@ const loginRequestBodySchema = z.object({
 const LoginForm = () => {
   const navigate = useNavigate()
   const { isIdle, isSuccess, mutate: login } = useMutation(loginMutation)
+  const { setIsloggedIn } = useUser()
 
   const form = useForm({
     defaultValues: {
@@ -32,6 +34,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (!isIdle && isSuccess) {
+      setIsloggedIn(true)
       navigate({
         from: '/login',
         to: '/',

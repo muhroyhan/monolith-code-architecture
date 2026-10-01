@@ -10,7 +10,7 @@ import { createClient } from 'redis'
 import { RedisStore } from 'connect-redis'
 import session from 'express-session'
 import { errorHandler } from './middlewares/errorHandler'
-import { cookieConfig, cookieSessionName } from './constants/cookie.constant'
+import { cookieConfig, cookieSessionName, maxAgeInSeconds } from './constants/cookie.constant'
 
 const app: Express = express()
 
@@ -32,6 +32,7 @@ await redisClient.connect()
 const redisStore = new RedisStore({
   client: redisClient,
   prefix: 'monolith:session:',
+  ttl: maxAgeInSeconds,
 })
 
 if (!process.env.SESSION_SECRET) throw new Error('SESSION_SECRET missing')
@@ -42,7 +43,8 @@ app.use(
     name: cookieSessionName,
     resave: false,
     saveUninitialized: false,
-    cookie: cookieConfig,
+    rolling: true,
+    cookie: { ...cookieConfig, httpOnly: true },
   }),
 )
 

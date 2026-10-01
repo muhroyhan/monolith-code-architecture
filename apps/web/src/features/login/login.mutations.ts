@@ -10,7 +10,6 @@ export const loginMutation = mutationOptions<LoginDataResponse, AxiosError, Logi
     return response.data
   },
   onSuccess: (data) => {
-    console.log(data)
     toast.success('Welcome Back!')
   },
 })

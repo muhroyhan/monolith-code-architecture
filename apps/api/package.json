@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@monolith-code-architecture/constants": "workspace:*",
     "@monolith-code-architecture/types": "workspace:*",
     "argon2": "^0.45.1",
     "compression": "^1.8.2",

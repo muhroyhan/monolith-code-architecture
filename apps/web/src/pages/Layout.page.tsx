@@ -1,11 +1,11 @@
-import { ProgramProvider } from '@/providers/Program.provider'
+import { UserProvider } from '@/providers/User.provider'
 import { Outlet } from '@tanstack/react-router'
 
 const LayoutPage = () => {
   return (
-    <ProgramProvider>
+    <UserProvider>
       <Outlet />
-    </ProgramProvider>
+    </UserProvider>
   )
 }
 
