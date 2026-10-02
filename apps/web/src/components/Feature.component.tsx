@@ -44,7 +44,7 @@ const FeatureComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
   const columnValues = Object.values(props.columns)
 
   return (
-    <Table>
+    <Table className="mt-6">
       <TableHeader>
         <TableRow>
           {columnValues.map((item, key) => (
@@ -85,4 +85,4 @@ const FeatureComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
   )
 }
 
-export default FeatureComponent
+export { FeatureComponent }

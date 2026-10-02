@@ -4,6 +4,7 @@ import { AdminListData } from './admin.type'
 export const adminColumns = {
   id: 'ID',
   username: 'Username',
+  displayName: 'Display Name',
   isActive: 'Active?',
   isSuper: 'Superadmin?',
   updatedAt: 'Updated At',
@@ -13,7 +14,8 @@ export const adminColumns = {
 export const adminDataFeedFormat = (data: AdminData): AdminListData => {
   return {
     id: data.id,
-    username: data.username,
+    username: data?.username ?? '',
+    displayName: data?.displayName ?? '',
     isActive: data.isActive ? 'YES' : 'NO',
     isSuper: data.isSuper ? 'YES' : 'NO',
     updatedAt: data.updatedAt,
@@ -24,6 +26,7 @@ export const adminDataFeedFormat = (data: AdminData): AdminListData => {
 export const adminUpdateFormat = (data: AdminData): Partial<AdminUpdateBodyRequest> => {
   return {
     username: data?.username ?? '',
+    displayName: data?.displayName ?? '',
     password: '',
     isActive: String(data.isActive),
     isSuper: String(data.isSuper),

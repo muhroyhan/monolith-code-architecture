@@ -38,8 +38,8 @@ const adminController = () => {
         password: hashedPass,
         isActive: Boolean(req.body.isActive),
         isSuper: Boolean(req.body.isSuper),
-        createdBy: req.session.username ?? '',
-        updatedBy: req.session.username ?? '',
+        createdBy: req.session.displayName ?? '',
+        updatedBy: req.session.displayName ?? '',
       })
       res.status(200).send({ success: true })
     },
@@ -49,7 +49,7 @@ const adminController = () => {
     ) => {
       let body: object = {
         ...req.body,
-        updatedBy: req.session.username ?? '',
+        updatedBy: req.session.displayName ?? '',
       }
       if (req.body.password) {
         const hashedPass = await hash(req.body.password)
@@ -70,7 +70,7 @@ const adminController = () => {
     delete: async (req: Request<{ id: string }>, res: Response<ApiResponseBody>) => {
       await service.delete(req.params.id, {
         deletedAt: new Date(),
-        deletedBy: req.session.username || '',
+        deletedBy: req.session.displayName || '',
       })
       res.status(200).send({ success: true })
     },

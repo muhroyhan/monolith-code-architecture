@@ -14,7 +14,7 @@ export interface LoginBody {
 }
 
 export interface LoginDataResponse {
-  admin: { username: string }
+  admin: { displayName: string }
 }
 
 export interface TableDataResponse<T> {

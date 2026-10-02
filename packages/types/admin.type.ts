@@ -1,6 +1,7 @@
 export interface AdminData {
   id: string
   username: string
+  displayName: string
   isActive: boolean
   isSuper: boolean
   updatedAt: Date
@@ -17,14 +18,11 @@ export interface AdminQueryRequest {
 export interface AdminCreateBodyRequest {
   password: string
   username: string
+  displayName: string
   isActive: string
   isSuper: string
 }
 
-export interface AdminUpdateBodyRequest {
-  password: string
-  username: string
-  isActive: string
-  isSuper: string
+export interface AdminUpdateBodyRequest extends AdminCreateBodyRequest {
   isDeleted: string
 }

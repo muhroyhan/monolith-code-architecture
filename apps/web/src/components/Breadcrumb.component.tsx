@@ -14,7 +14,7 @@ const BreadcrumbComponent = (props: { paths: string[] }) => {
   const { paths } = props
   const { program } = useProgram()
   return (
-    <Breadcrumb>
+    <Breadcrumb className="pb-6">
       <BreadcrumbList>
         {paths.reduce<React.JSX.Element[]>((jsxs, item, key) => {
           if (key === paths.length - 1 && ['edit', 'view'].includes(paths[key - 1])) {
@@ -27,7 +27,7 @@ const BreadcrumbComponent = (props: { paths: string[] }) => {
                 </BreadcrumbLink>
               </BreadcrumbItem>,
             )
-            jsxs.push(<BreadcrumbSeparator key={key + 's'} />)
+            if (paths.length > 1) jsxs.push(<BreadcrumbSeparator key={key + 's'} />)
           } else if (`/${item}` === program?.path) {
             jsxs.push(
               <BreadcrumbItem key={key}>

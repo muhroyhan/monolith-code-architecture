@@ -1,13 +1,13 @@
 import { dbClient } from '@/db/client'
 import { adminTable } from '@/db/schema'
 import { AdminData, AdminQueryRequest } from '@monolith-code-architecture/types'
-import { isNotNull, isNull, SQL } from 'drizzle-orm'
-import { and, eq, ilike } from 'drizzle-orm/pg-core/expressions'
+import { and, eq, isNotNull, isNull, like, or } from 'drizzle-orm/pg-core/expressions'
 import {
   AdminServiceCreateBody,
   AdminServiceDeleteBody,
   AdminServiceUpdateBody,
 } from './admin.type'
+import { SQL } from 'drizzle-orm/sql/sql'
 
 const adminService = () => ({
   getWhere: (query?: AdminQueryRequest): SQL | undefined => {
@@ -17,7 +17,13 @@ const adminService = () => ({
     else where.push(isNull(adminTable.deletedAt))
     if (!!query.isActive) where.push(eq(adminTable.isActive, query.isActive))
     if (!!query.isSuper) where.push(eq(adminTable.isSuper, query.isSuper))
-    if (!!query.username) where.push(ilike(adminTable.username, `%${query.username}%`))
+    if (!!query.username)
+      where.push(
+        or(
+          like(adminTable.username, `%${query.username}%`),
+          like(adminTable.displayName, `%${query.username}%`),
+        )!,
+      )
     return and(...where)
   },
   findAll: async (query?: SQL): Promise<AdminData[]> => {
@@ -25,6 +31,7 @@ const adminService = () => ({
       .select({
         id: adminTable.id,
         username: adminTable.username,
+        displayName: adminTable.displayName,
         isActive: adminTable.isActive,
         isSuper: adminTable.isSuper,
         updatedAt: adminTable.updatedAt,
@@ -39,6 +46,7 @@ const adminService = () => ({
       .select({
         id: adminTable.id,
         username: adminTable.username,
+        displayName: adminTable.displayName,
         isActive: adminTable.isActive,
         isSuper: adminTable.isSuper,
         updatedAt: adminTable.updatedAt,

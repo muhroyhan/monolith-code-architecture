@@ -1,11 +1,11 @@
 import { cookieConfig } from '@/constants/cookie.constant'
-import { loggedCookieName } from '@monolith-code-architecture/constants'
+import { adminNameCookieName } from '@monolith-code-architecture/constants'
 import { ApiResponseBody } from '@monolith-code-architecture/types'
 import { type Request, type Response } from 'express'
 import type { RequestHandler } from 'express'
 
 const requireAuth: RequestHandler = (req: Request, res: Response<ApiResponseBody>, next) => {
-  if (!req.session.username) {
+  if (!req.session.displayName) {
     res.status(401).json({
       success: false,
       error: {
@@ -16,11 +16,11 @@ const requireAuth: RequestHandler = (req: Request, res: Response<ApiResponseBody
     return
   }
 
-  if (req.session && req.session.username) {
+  if (req.session && req.session.displayName) {
     const currentMaxAge = req.session.cookie.maxAge ?? 0
 
     if (currentMaxAge <= 0) {
-      res.cookie(loggedCookieName, 'true', {
+      res.cookie(adminNameCookieName, req.session.displayName, {
         ...cookieConfig,
         httpOnly: false,
       })

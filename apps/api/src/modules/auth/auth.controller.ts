@@ -3,7 +3,7 @@ import { authService } from './auth.service'
 import { ApiError } from '@/classes/ApiError'
 import { ApiResponseBody, LoginBody, LoginDataResponse } from '@monolith-code-architecture/types'
 import { cookieConfig, cookieSessionName } from '@/constants/cookie.constant'
-import { loggedCookieName } from '@monolith-code-architecture/constants'
+import { adminNameCookieName } from '@monolith-code-architecture/constants'
 
 const authController = () => {
   const service = authService()
@@ -13,13 +13,13 @@ const authController = () => {
       res: Response<ApiResponseBody<LoginDataResponse>>,
     ) => {
       const admin = await service.login(req.body)
-      res.cookie(loggedCookieName, 'true', {
+      res.cookie(adminNameCookieName, admin.displayName, {
         ...cookieConfig,
         httpOnly: false,
       })
       req.session.regenerate((err) => {
         if (err) throw new ApiError('FORBIDDEN', 403)
-        req.session.username = admin.username
+        req.session.displayName = admin.displayName
         req.session.save((saveErr) => {
           if (saveErr) throw new ApiError(saveErr, 403, 'FORBIDDEN')
           res.status(200).json({
@@ -33,7 +33,7 @@ const authController = () => {
       req.session.destroy((err) => {
         if (err) throw new ApiError(err, 400, 'ERROR')
         res.clearCookie(cookieSessionName, cookieConfig)
-        res.clearCookie(loggedCookieName, cookieConfig)
+        res.clearCookie(adminNameCookieName, cookieConfig)
         res.status(200).send({ success: true })
       })
     },

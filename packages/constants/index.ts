@@ -1,1 +1,1 @@
-export const loggedCookieName = 'is_logged_in'
+export const adminNameCookieName = 'admin_display_name'

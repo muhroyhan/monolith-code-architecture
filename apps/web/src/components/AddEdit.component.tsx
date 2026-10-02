@@ -126,4 +126,4 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
   )
 }
 
-export default AddEditComponent
+export { AddEditComponent }

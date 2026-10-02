@@ -1,5 +1,9 @@
 const DashboardPage = () => {
-  return <div>DashboardPage</div>
+  return (
+    <div>
+      <div className="text-center">DashboardPage</div>
+    </div>
+  )
 }
 
 export { DashboardPage }

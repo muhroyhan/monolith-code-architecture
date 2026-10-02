@@ -10,7 +10,7 @@ const authService = () => ({
     if (!body) throw new ApiError('Missing body', 403, 'FORBIDDEN')
     const admins = await dbClient
       .select({
-        username: adminTable.username,
+        displayName: adminTable.displayName,
         password: adminTable.password,
         isActive: adminTable.isActive,
         deletedAt: adminTable.deletedAt,
@@ -24,7 +24,7 @@ const authService = () => ({
     if (!!admin.deletedAt) throw new ApiError('Admin was deleted', 410, 'GONE')
     const isVerified = await verify(admin.password, body.password)
     if (!isVerified) throw new ApiError('Not verified', 403, 'FORBIDDEN')
-    return { username: admin.username }
+    return { displayName: admin.displayName }
   },
 })
 

@@ -1,12 +1,12 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { loggedCookieName } from '@monolith-code-architecture/constants'
+import { createContext, ReactNode, useContext, useState } from 'react'
+import { adminNameCookieName } from '@monolith-code-architecture/constants'
 
 const UserContext = createContext<{
-  isLoggedIn: boolean
-  setIsloggedIn: React.Dispatch<React.SetStateAction<boolean>>
+  adminName: string
+  setAdminName: React.Dispatch<React.SetStateAction<string>>
 }>({
-  isLoggedIn: false,
-  setIsloggedIn: () => false,
+  adminName: '',
+  setAdminName: () => '',
 })
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -18,8 +18,8 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       const value = split[1]
       return { ...obj, [key]: value }
     }, {})
-  const [isLoggedIn, setIsloggedIn] = useState(!!splittedCookie[loggedCookieName])
-  return <UserContext value={{ isLoggedIn, setIsloggedIn: setIsloggedIn }}>{children}</UserContext>
+  const [adminName, setAdminName] = useState(splittedCookie[adminNameCookieName])
+  return <UserContext value={{ adminName, setAdminName }}>{children}</UserContext>
 }
 
 const useUser = () => useContext(UserContext)

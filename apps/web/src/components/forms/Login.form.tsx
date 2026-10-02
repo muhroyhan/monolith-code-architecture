@@ -16,8 +16,8 @@ const loginRequestBodySchema = z.object({
 
 const LoginForm = () => {
   const navigate = useNavigate()
-  const { isIdle, isSuccess, mutate: login } = useMutation(loginMutation)
-  const { setIsloggedIn } = useUser()
+  const { isIdle, isSuccess, mutate: login, data } = useMutation(loginMutation)
+  const { setAdminName } = useUser()
 
   const form = useForm({
     defaultValues: {
@@ -34,7 +34,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (!isIdle && isSuccess) {
-      setIsloggedIn(true)
+      setAdminName(data?.data?.admin.displayName ?? '')
       navigate({
         from: '/login',
         to: '/',

@@ -9,6 +9,7 @@ const programs: (location: ParsedLocation) => { [K in keyof Feature]: ProgramReg
   admin: {
     add: {
       defaultValues: {
+        displayName: '',
         username: '',
         password: '',
         isActive: 'true',
@@ -21,6 +22,12 @@ const programs: (location: ParsedLocation) => { [K in keyof Feature]: ProgramReg
           type: 'text',
           required: true,
           title: 'Username',
+        },
+        {
+          name: 'displayName',
+          type: 'text',
+          required: true,
+          title: 'Display Name',
         },
         {
           name: 'password',

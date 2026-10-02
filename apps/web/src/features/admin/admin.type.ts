@@ -4,6 +4,7 @@ import * as z from 'zod'
 export const addAdminSchema: z.ZodType<AdminCreateBodyRequest, AdminCreateBodyRequest> = z.object({
   password: z.string(),
   username: z.string(),
+  displayName: z.string(),
   isActive: z.string(),
   isSuper: z.string(),
 })

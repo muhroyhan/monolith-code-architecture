@@ -12,11 +12,11 @@ import { useNavigate } from '@tanstack/react-router'
 
 const LoginPage = () => {
   const navigate = useNavigate()
-  const { isLoggedIn } = useUser()
+  const { adminName } = useUser()
 
   useEffect(() => {
-    if (isLoggedIn) navigate({ to: '/' })
-  }, [isLoggedIn])
+    if (adminName) navigate({ replace: true, to: '/' })
+  }, [adminName])
 
   return (
     <div className="h-screen flex items-center justify-center">
