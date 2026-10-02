@@ -44,12 +44,12 @@ const routeTree = rootRoute.addChildren([
     }),
     createRoute({
       getParentRoute: () => userLayoutRouter,
-      path: '$feature/view/$id',
+      path: '$feature/$id',
       component: ViewPage,
     }),
     createRoute({
       getParentRoute: () => userLayoutRouter,
-      path: '$feature/edit/$id',
+      path: '$feature/$id/edit',
       component: AddEditPage,
     }),
   ]),

@@ -7,6 +7,7 @@ const AddEditPage = () => {
 
   return (
     <>
+      <div className="text-2xl font-bold mb-6">{program?.name}</div>
       {(!program || !program.isReadAllowed || !program.isWriteAllowed) && <NotFoundPage />}
       {program && program.isReadAllowed && program.isWriteAllowed && (
         <AddEditComponent {...program} />

@@ -17,42 +17,23 @@ const BreadcrumbComponent = (props: { paths: string[] }) => {
     <Breadcrumb className="pb-6">
       <BreadcrumbList>
         {paths.reduce<React.JSX.Element[]>((jsxs, item, key) => {
-          if (key === paths.length - 1 && ['edit', 'view'].includes(paths[key - 1])) {
-            return jsxs
-          } else if (item.length === 0) {
+          let name = 'Dashboard'
+          if (!!item) {
+            name = ['add', 'edit'].includes(item) ? startCase(item) : item
+            if (program?.path.includes(item)) name = program.name
+          }
+
+          if (key === paths.length - 1) {
             jsxs.push(
               <BreadcrumbItem key={key}>
-                <BreadcrumbLink asChild>
-                  <Link to="/">Dashboard</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>,
-            )
-            if (paths.length > 1) jsxs.push(<BreadcrumbSeparator key={key + 's'} />)
-          } else if (`/${item}` === program?.path) {
-            jsxs.push(
-              <BreadcrumbItem key={key}>
-                {key === paths.length - 1 && <BreadcrumbPage>{program.name}</BreadcrumbPage>}
-                {key !== paths.length - 1 && (
-                  <BreadcrumbLink asChild>
-                    <Link to={program.path}>{program.name}</Link>
-                  </BreadcrumbLink>
-                )}
-              </BreadcrumbItem>,
-            )
-            if (key !== paths.length - 1) jsxs.push(<BreadcrumbSeparator key={key + 's'} />)
-          } else if (['add', 'edit', 'view'].includes(item)) {
-            jsxs.push(
-              <BreadcrumbItem key={key}>
-                <BreadcrumbPage>
-                  {startCase(item)} {item !== 'add' && `(${paths[key + 1]})`}
-                </BreadcrumbPage>
+                <BreadcrumbPage>{name}</BreadcrumbPage>
               </BreadcrumbItem>,
             )
           } else {
             jsxs.push(
               <BreadcrumbItem key={key}>
                 <BreadcrumbLink asChild>
-                  <Link to={paths.slice(0, key).join('/')}>{startCase(item)}</Link>
+                  <Link to={item ? paths.slice(0, key + 1).join('/') : '/'}>{name}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>,
             )

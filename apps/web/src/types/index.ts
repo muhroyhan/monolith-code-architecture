@@ -1,4 +1,4 @@
-import { AdminListData } from '@/features/admin/admin.type'
+import { AdminDataFeed, AdminListData } from '@/features/admin/admin.type'
 import {
   AdminCreateBodyRequest,
   AdminData,
@@ -9,10 +9,11 @@ import { ZodType } from 'zod'
 
 export interface Feature {
   admin: {
-    data: AdminData
-    queryparam: AdminQueryRequest
-    dataFeed: AdminListData
     createBody: AdminCreateBodyRequest
+    data: AdminData
+    dataFeed: AdminDataFeed
+    dataList: AdminListData
+    queryparam: AdminQueryRequest
     updateBody: Partial<AdminUpdateBodyRequest>
   }
 }
@@ -24,7 +25,8 @@ export interface ProgramRegistary<K extends keyof Feature> {
     forms: AddEditFormRegistary[]
   }
   api: string
-  columns: { [P in keyof Feature[K]['data']]: string }
+  columns: { [P in keyof Feature[K]['dataList']]: string }
+  rowActions: ('edit' | 'view')[]
   updateFormat: (data: Feature[K]['data']) => Feature[K]['updateBody']
   dataFormat: (data: Feature[K]['data']) => Feature[K]['dataFeed']
   feature: K

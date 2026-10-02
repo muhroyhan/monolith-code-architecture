@@ -8,7 +8,11 @@ export const addAdminSchema: z.ZodType<AdminCreateBodyRequest, AdminCreateBodyRe
   isActive: z.string(),
   isSuper: z.string(),
 })
-export interface AdminListData extends Omit<AdminData, 'isActive' | 'isSuper'> {
+export interface AdminListData extends Omit<AdminData, 'id' | 'isActive' | 'isSuper'> {
+  isActive: string
+  isSuper: string
+}
+export interface AdminDataFeed extends Omit<AdminData, 'isActive' | 'isSuper'> {
   isActive: string
   isSuper: string
 }

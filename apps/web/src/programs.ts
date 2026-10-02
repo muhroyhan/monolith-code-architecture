@@ -71,6 +71,7 @@ const programs: (location: ParsedLocation) => { [K in keyof Feature]: ProgramReg
     },
     api: '/admin',
     columns: adminColumns,
+    rowActions: ['edit', 'view'],
     dataFormat: adminDataFeedFormat,
     updateFormat: adminUpdateFormat,
     feature: 'admin',
