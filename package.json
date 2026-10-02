@@ -35,7 +35,8 @@
     "dotenv": "^18.0.4",
     "es-toolkit": "^1.52.0",
     "oxfmt": "^0.70.0",
-    "oxlint": "^1.85.0"
+    "oxlint": "^1.85.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/node": "^26.6.3"

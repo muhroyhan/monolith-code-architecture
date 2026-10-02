@@ -47,7 +47,7 @@ const adminService = () => ({
 
     if (pagination) {
       const offset = (pagination.number - 1) * pagination.size
-      admins.limit(pagination.size).offset(offset)
+      admins.limit(Number(pagination.size)).offset(offset)
     }
     return await admins
   },

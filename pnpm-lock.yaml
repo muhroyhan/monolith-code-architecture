@@ -178,6 +178,9 @@ importers:
       oxlint:
         specifier: ^1.85.0
         version: 1.85.0
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
     devDependencies:
       '@types/node':
         specifier: ^26.6.3
@@ -211,7 +214,7 @@ importers:
         version: 18.0.4
       drizzle-orm:
         specifier: 1.0.0-rc.4
-        version: 1.0.0-rc.4(@types/pg@8.23.1)(pg@8.23.0)(zod@3.25.76)
+        version: 1.0.0-rc.4(@types/pg@8.23.1)(pg@8.23.0)(zod@4.6.5)
       errorhandler:
         specifier: ^1.5.2
         version: 1.5.2
@@ -339,9 +342,6 @@ importers:
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
-      zod:
-        specifier: ^4.6.5
-        version: 4.6.5
     devDependencies:
       '@types/react':
         specifier: ^19.3.0
@@ -358,7 +358,13 @@ importers:
 
   packages/constants: {}
 
-  packages/types: {}
+  packages/schemas: {}
+
+  packages/types:
+    dependencies:
+      '@monolith-code-architecture/schemas':
+        specifier: workspace:*
+        version: link:../schemas
 
 packages:
 
@@ -6664,11 +6670,11 @@ snapshots:
       get-tsconfig: 4.14.3
       jiti: 2.7.0
 
-  drizzle-orm@1.0.0-rc.4(@types/pg@8.23.1)(pg@8.23.0)(zod@3.25.76):
+  drizzle-orm@1.0.0-rc.4(@types/pg@8.23.1)(pg@8.23.0)(zod@4.6.5):
     optionalDependencies:
       '@types/pg': 8.23.1
       pg: 8.23.0
-      zod: 3.25.76
+      zod: 4.6.5
 
   dts-resolver@3.0.0: {}
 

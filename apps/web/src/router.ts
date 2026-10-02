@@ -7,6 +7,7 @@ import { NotFoundPage } from './pages/NotFound.page'
 import { FeaturePage } from './pages/Feature.page'
 import { AddEditPage } from './pages/AddEdit.page'
 import { ViewPage } from './pages/View.page'
+import { BaseQueryRequest } from '@monolith-code-architecture/types'
 import { Feature } from './types'
 
 const rootRoute = createRootRoute({
@@ -31,10 +32,19 @@ const routeTree = rootRoute.addChildren([
     createRoute({
       getParentRoute: () => userLayoutRouter,
       path: '$feature',
-      validateSearch: (search) =>
-        search as {
+      validateSearch: (
+        search: BaseQueryRequest<{
           [K in keyof Feature]?: Feature[K]['queryparam']
-        },
+        }>,
+      ) => {
+        return {
+          page: {
+            number: 1,
+            size: 10,
+          },
+          ...search,
+        }
+      },
       component: FeaturePage,
     }),
     createRoute({
