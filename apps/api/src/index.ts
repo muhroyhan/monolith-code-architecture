@@ -14,6 +14,7 @@ import { cookieConfig, cookieSessionName, maxAgeInSeconds } from './constants/co
 
 const app: Express = express()
 
+app.set('query parser', 'extended')
 app.use(
   cors({
     credentials: true,

@@ -1,6 +1,10 @@
 import { dbClient } from '@/db/client'
 import { adminTable } from '@/db/schema'
-import { AdminData, AdminQueryRequest } from '@monolith-code-architecture/types'
+import {
+  AdminData,
+  AdminQueryRequest,
+  PaginationQueryRequest,
+} from '@monolith-code-architecture/types'
 import { and, eq, isNotNull, isNull, like, or } from 'drizzle-orm/pg-core/expressions'
 import {
   AdminServiceCreateBody,
@@ -8,6 +12,7 @@ import {
   AdminServiceUpdateBody,
 } from './admin.type'
 import { SQL } from 'drizzle-orm/sql/sql'
+import { count } from 'drizzle-orm/sql/functions/aggregate'
 
 const adminService = () => ({
   getWhere: (query?: AdminQueryRequest): SQL | undefined => {
@@ -26,8 +31,8 @@ const adminService = () => ({
       )
     return and(...where)
   },
-  findAll: async (query?: SQL): Promise<AdminData[]> => {
-    const admins = await dbClient
+  findAll: async (pagination?: PaginationQueryRequest, query?: SQL): Promise<AdminData[]> => {
+    const admins = dbClient
       .select({
         id: adminTable.id,
         username: adminTable.username,
@@ -39,9 +44,18 @@ const adminService = () => ({
       })
       .from(adminTable)
       .where(query)
-    return admins
+
+    if (pagination) {
+      const offset = (pagination.number - 1) * pagination.size
+      admins.limit(pagination.size).offset(offset)
+    }
+    return await admins
   },
-  findOne: async (id: string): Promise<AdminData | object> => {
+  count: async (query?: SQL): Promise<number> => {
+    const admins = await dbClient.select({ count: count() }).from(adminTable).where(query)
+    return admins[0].count
+  },
+  findById: async (id: string): Promise<AdminData | object> => {
     const admins = await dbClient
       .select({
         id: adminTable.id,
@@ -53,7 +67,23 @@ const adminService = () => ({
         updatedBy: adminTable.updatedBy,
       })
       .from(adminTable)
-      .where(eq(adminTable.id, id))
+      .where(and(eq(adminTable.id, id), isNull(adminTable.deletedAt)))
+      .limit(1)
+    return admins ? admins[0] : {}
+  },
+  findByUsername: async (username: string): Promise<AdminData | object> => {
+    const admins = await dbClient
+      .select({
+        id: adminTable.id,
+        username: adminTable.username,
+        displayName: adminTable.displayName,
+        isActive: adminTable.isActive,
+        isSuper: adminTable.isSuper,
+        updatedAt: adminTable.updatedAt,
+        updatedBy: adminTable.updatedBy,
+      })
+      .from(adminTable)
+      .where(eq(adminTable.username, username))
       .limit(1)
     return admins ? admins[0] : {}
   },
