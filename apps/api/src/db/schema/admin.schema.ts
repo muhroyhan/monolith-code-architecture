@@ -3,7 +3,7 @@ import { boolean, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg
 export const adminTable = pgTable('admin', {
   id: uuid('id').primaryKey().defaultRandom().unique(),
   username: varchar('username', { length: 50 }).notNull().unique(),
-  displayName: varchar('display_name', { length: 50 }).notNull().unique(),
+  displayName: varchar('display_name', { length: 50 }).notNull(),
   password: text('password').notNull(),
   isActive: boolean('is_active').notNull().default(true),
   isSuper: boolean('is_super').notNull().default(false),

@@ -8,12 +8,13 @@ import { Feature, ProgramRegistary } from '@/types'
 import { differenceByObject } from '@/utils/difference_by_object'
 import { ApiResponseBody } from '@monolith-code-architecture/types'
 import { useForm } from '@tanstack/react-form'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLocation, useNavigate, useParams } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) => {
   const { id } = useParams({ strict: false })
+  const queryClient = useQueryClient()
   const location = useLocation()
   const navigate = useNavigate()
   const isAddPage = location.pathname.includes('add')
@@ -24,6 +25,10 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
   const apiUrl = isAddPage ? props.api : getUpdateUrl
 
   const { isIdle, isSuccess, mutate } = useFeatureMutation(apiUrl, isAddPage)
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: [props.path, 'findOne'] })
+  }, [])
 
   let defaultValues: CreateBodyType | UpdateBodyType = props.add.defaultValues
   if (!isAddPage) {
@@ -50,7 +55,9 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
 
   useEffect(() => {
     if (!isIdle && isSuccess) {
+      queryClient.invalidateQueries({ queryKey: [props.path, 'findall'] })
       navigate({
+        replace: true,
         from: location.pathname,
         to: props.path,
       })

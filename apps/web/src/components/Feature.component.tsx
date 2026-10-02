@@ -78,7 +78,7 @@ const FeatureComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
   const columnValues = Object.values(props.columns)
 
   return (
-    <Table className="mt-6 w-max">
+    <Table className="mt-6 w-full">
       <TableHeader>
         <TableRow>
           {columnValues.map((item, key) => (

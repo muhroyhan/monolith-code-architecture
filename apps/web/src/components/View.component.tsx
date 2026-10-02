@@ -12,12 +12,17 @@ import {
 import { Feature, ProgramRegistary } from '@/types'
 import { ApiResponseBody } from '@monolith-code-architecture/types'
 import { RiFileListLine } from '@remixicon/react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams } from '@tanstack/react-router'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const ViewComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) => {
   const { id } = useParams({ strict: false })
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: [props.path, 'findOne'] })
+  }, [])
 
   const { data: result } = useQuery({
     queryKey: [props.api, 'findOne', id],
