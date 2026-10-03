@@ -221,6 +221,9 @@ importers:
       express:
         specifier: ^5.2.1
         version: 5.2.1
+      express-rate-limit:
+        specifier: ^8.7.0
+        version: 8.7.0(express@5.2.1)
       express-session:
         specifier: ^1.19.0
         version: 1.19.0
@@ -358,13 +361,7 @@ importers:
 
   packages/constants: {}
 
-  packages/schemas: {}
-
-  packages/types:
-    dependencies:
-      '@monolith-code-architecture/schemas':
-        specifier: workspace:*
-        version: link:../schemas
+  packages/types: {}
 
 packages:
 

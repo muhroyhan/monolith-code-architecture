@@ -11,9 +11,19 @@ import { RedisStore } from 'connect-redis'
 import session from 'express-session'
 import { errorHandler } from './middlewares/errorHandler'
 import { cookieConfig, cookieSessionName, maxAgeInSeconds } from './constants/cookie.constant'
+import { rateLimit } from 'express-rate-limit'
 
 const app: Express = express()
 
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: 'Too many requests from this IP, please try again after 15 minutes',
+  }),
+)
 app.set('query parser', 'extended')
 app.use(
   cors({
