@@ -48,8 +48,8 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
       onSubmit: props.add.schema,
     },
     onSubmit: async ({ value }) => {
-      const changedValues = differenceByObject(defaultValues, value)
-      mutate(changedValues)
+      const values = isAddPage ? value : differenceByObject(defaultValues, value)
+      mutate(values)
     },
   })
 

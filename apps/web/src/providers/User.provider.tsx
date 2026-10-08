@@ -18,7 +18,9 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       const value = split[1]
       return { ...obj, [key]: value }
     }, {})
-  const [adminName, setAdminName] = useState(splittedCookie[adminNameCookieName])
+  const [adminName, setAdminName] = useState(
+    decodeURIComponent(splittedCookie[adminNameCookieName]),
+  )
   return <UserContext value={{ adminName, setAdminName }}>{children}</UserContext>
 }
 

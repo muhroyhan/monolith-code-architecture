@@ -57,8 +57,8 @@ const adminController = () => {
       await service.create({
         ...req.body,
         password: hashedPass,
-        isActive: Boolean(req.body.isActive),
-        isSuper: Boolean(req.body.isSuper),
+        isActive: req.body.isActive === 'true',
+        isSuper: req.body.isSuper === 'true',
         createdBy: req.session.displayName ?? '',
         updatedBy: req.session.displayName ?? '',
       })
@@ -77,13 +77,13 @@ const adminController = () => {
         body = { ...body, password: hashedPass }
       }
       if (req.body.isActive) {
-        body = { ...body, isActive: Boolean(req.body.isActive) }
+        body = { ...body, isActive: req.body.isActive === 'true' }
       }
       if (req.body.isSuper) {
-        body = { ...body, isActive: Boolean(req.body.isSuper) }
+        body = { ...body, isSuper: req.body.isSuper === 'true' }
       }
       if (req.body.isDeleted) {
-        body = { ...body, isActive: Boolean(req.body.isDeleted) }
+        body = { ...body, isDeleted: req.body.isDeleted === 'true' }
       }
       await service.update(req.params.id, body)
       res.status(200).send({ success: true })

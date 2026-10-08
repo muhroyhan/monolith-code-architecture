@@ -20,6 +20,7 @@ const authController = () => {
       req.session.regenerate((err) => {
         if (err) throw new ApiError('FORBIDDEN', 403)
         req.session.displayName = admin.displayName
+        req.session.userId = admin.id
         req.session.save((saveErr) => {
           if (saveErr) throw new ApiError(saveErr, 403, 'FORBIDDEN')
           res.status(200).json({

@@ -25,7 +25,7 @@ export interface LoginBody {
 }
 
 export interface LoginDataResponse {
-  admin: { displayName: string }
+  admin: { id: string; displayName: string }
 }
 
 export interface TableDataResponse<T> {
