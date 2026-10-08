@@ -18,7 +18,7 @@ export const adminDataFeedFormat = (data: AdminData): AdminDataFeed => {
     isActive: data.isActive ? 'YES' : 'NO',
     isSuper: data.isSuper ? 'YES' : 'NO',
     updatedAt: data.updatedAt,
-    updatedBy: data.updatedBy,
+    updatedBy: data.updatedBy ?? '',
   }
 }
 

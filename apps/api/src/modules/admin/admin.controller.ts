@@ -22,7 +22,6 @@ const adminController = () => {
       const queries = service.getWhere(req.query.filters)
       const count = await service.count(queries)
       const dataFeed = await service.findAll(req.query.page, queries)
-      console.log(dataFeed)
       let body: ApiResponseBody<TableDataResponse<AdminData>> = {
         success: true,
         data: { dataFeed },

@@ -10,8 +10,8 @@ const FeaturePage = () => {
     <>
       {(!program || !program.isReadAllowed) && <NotFoundPage />}
       {program && program.isReadAllowed && (
-        <div>
-          <div className="text-2xl font-bold mb-6">{program.name}</div>
+        <div className="flex flex-col gap-y-6">
+          <div className="text-2xl font-bold">{program.name}</div>
           {program.isWriteAllowed && (
             <Link to={program.path + '/add'}>
               <Button>Add</Button>

@@ -52,7 +52,7 @@ function PaginationLink({
       asChild
       variant={isActive ? 'outline' : 'ghost'}
       size={size}
-      className={cn(className)}
+      className={cn(isActive && 'bg-accent text-white', className)}
     >
       <Link
         aria-current={isActive ? 'page' : undefined}

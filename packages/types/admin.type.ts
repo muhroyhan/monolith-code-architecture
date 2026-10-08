@@ -9,7 +9,7 @@ export interface AdminData {
 }
 
 export interface AdminQueryRequest {
-  username?: string
+  name?: string
   isActive?: boolean
   isSuper?: boolean
   isDeleted?: boolean

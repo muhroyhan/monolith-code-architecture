@@ -112,7 +112,7 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
                   onChange={(e) => {
                     field.handleChange(e.target.value as any)
                   }}
-                  placeholder="Enter Text..."
+                  placeholder={item?.placeholder ?? 'Enter Text...'}
                   required={item.required}
                   type={item.type}
                   value={String(field.state.value)}

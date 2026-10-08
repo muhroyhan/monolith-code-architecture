@@ -22,11 +22,11 @@ const adminService = () => ({
     else where.push(isNull(adminTable.deletedAt))
     if (!!query.isActive) where.push(eq(adminTable.isActive, query.isActive))
     if (!!query.isSuper) where.push(eq(adminTable.isSuper, query.isSuper))
-    if (!!query.username)
+    if (!!query.name)
       where.push(
         or(
-          like(adminTable.username, `%${query.username}%`),
-          like(adminTable.displayName, `%${query.username}%`),
+          like(adminTable.username, `%${query.name}%`),
+          like(adminTable.displayName, `%${query.name}%`),
         )!,
       )
     return and(...where)

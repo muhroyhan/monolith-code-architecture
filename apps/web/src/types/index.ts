@@ -27,14 +27,14 @@ export interface ProgramRegistary<K extends keyof Feature> {
   }
   api: string
   columns: { [P in keyof Feature[K]['dataList']]: string }
-  rowActions: ('edit' | 'view')[]
-  updateFormat: (data: Feature[K]['data']) => Feature[K]['updateBody']
   dataFormat: (data: Feature[K]['data']) => Feature[K]['dataFeed']
-  feature: K
+  filters?: FilterFormRegistary[]
   isReadAllowed: boolean
   isWriteAllowed: boolean
   name: string
   path: string
+  rowActions: ('edit' | 'view')[]
+  updateFormat: (data: Feature[K]['data']) => Feature[K]['updateBody']
 }
 
 export interface AddEditFormRegistary {
@@ -43,6 +43,20 @@ export interface AddEditFormRegistary {
   required?: boolean
   disabled?: boolean
   title?: string
+  placeholder?: string
+  options?: {
+    label: string
+    value: string
+  }[]
+}
+
+export interface FilterFormRegistary {
+  name: string
+  type: 'text' | 'select' | 'radio'
+  required?: boolean
+  disabled?: boolean
+  label?: string
+  placeholder?: string
   options?: {
     label: string
     value: string
