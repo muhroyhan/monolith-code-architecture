@@ -25,7 +25,7 @@ export interface LoginBody {
 }
 
 export interface LoginDataResponse {
-  admin: { id: string; displayName: string }
+  admin: { id: string; displayName: string; isActive: boolean; isSuper: boolean }
 }
 
 export interface TableDataResponse<T> {

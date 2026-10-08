@@ -14,6 +14,7 @@ const authService = () => ({
         id: adminTable.id,
         password: adminTable.password,
         isActive: adminTable.isActive,
+        isSuper: adminTable.isSuper,
         deletedAt: adminTable.deletedAt,
       })
       .from(adminTable)
@@ -25,7 +26,12 @@ const authService = () => ({
     if (!!admin.deletedAt) throw new ApiError('Admin was deleted', 410, 'GONE')
     const isVerified = await verify(admin.password, body.password)
     if (!isVerified) throw new ApiError('Not verified', 403, 'FORBIDDEN')
-    return { id: admin.id, displayName: admin.displayName }
+    return {
+      id: admin.id,
+      displayName: admin.displayName,
+      isActive: admin.isActive,
+      isSuper: admin.isSuper,
+    }
   },
 })
 

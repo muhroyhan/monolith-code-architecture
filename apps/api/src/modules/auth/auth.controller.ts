@@ -19,8 +19,11 @@ const authController = () => {
       })
       req.session.regenerate((err) => {
         if (err) throw new ApiError('FORBIDDEN', 403)
-        req.session.displayName = admin.displayName
-        req.session.userId = admin.id
+        req.session.user!.id = admin.id
+        req.session.user!.displayName = admin.displayName
+        req.session.user!.isActive = admin.isActive
+        req.session.user!.isSuper = admin.isSuper
+
         req.session.save((saveErr) => {
           if (saveErr) throw new ApiError(saveErr, 403, 'FORBIDDEN')
           res.status(200).json({
