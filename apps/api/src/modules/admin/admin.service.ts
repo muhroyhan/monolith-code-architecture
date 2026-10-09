@@ -49,7 +49,7 @@ const adminService = () => ({
       newBody = { ...newBody, isSuper: body.isSuper === 'true' }
     }
     if (body.isDeleted) {
-      newBody = { ...newBody, isDeleted: body.isDeleted === 'true' }
+      newBody = { ...newBody, deletedAt: body.isDeleted === 'true' ? new Date() : null }
     }
     if (body.permissions) {
       newBody = {

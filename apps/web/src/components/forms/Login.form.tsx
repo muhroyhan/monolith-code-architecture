@@ -3,16 +3,11 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { useEffect } from 'react'
-import * as z from 'zod'
 import { Label } from '@/shadcn/components/ui/label'
 import { Input } from '@/shadcn/components/ui/input'
 import { Button } from '@/shadcn/components/ui/button'
 import { useAdmin } from '@/providers/Admin.provider'
-
-const loginRequestBodySchema = z.object({
-  username: z.string(),
-  password: z.string(),
-})
+import { loginBodySchema } from '@monolith-code-architecture/constants'
 
 const LoginForm = () => {
   const navigate = useNavigate()
@@ -25,7 +20,7 @@ const LoginForm = () => {
       password: '',
     },
     validators: {
-      onSubmit: loginRequestBodySchema,
+      onSubmit: loginBodySchema,
     },
     onSubmit: async ({ value }) => {
       login(value)

@@ -11,6 +11,7 @@ import {
 import { adminService } from './admin.service'
 import { hash } from 'argon2'
 import { ApiError } from '@/classes/ApiError'
+import { AdminServiceCreateBody } from './admin.type'
 
 const adminController = () => {
   const service = adminService()
@@ -54,14 +55,17 @@ const adminController = () => {
       const admin = await service.findByUsername(req.body.username)
       if (admin) throw new ApiError('Admin username available.', 409, 'CONFLICT')
       const hashedPass = await hash(req.body.password)
-      await service.create({
-        ...req.body,
+      const input: AdminServiceCreateBody = {
+        username: req.body.username,
+        displayName: req.body.displayName,
         password: hashedPass,
         isActive: req.body.isActive === 'true',
         isSuper: req.body.isSuper === 'true',
         createdBy: req.session.admin?.displayName ?? '',
         updatedBy: req.session.admin?.displayName ?? '',
-      })
+        permissions: req.body.permissions,
+      }
+      await service.create(input)
       res.status(200).send({ success: true })
     },
     update: async (

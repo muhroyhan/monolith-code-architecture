@@ -1,11 +1,11 @@
 import { AddEditFormRegistary, FilterFormRegistary, ProgramRegistary } from '@/types'
-import { addAdminSchema } from './admin.type'
 import { adminColumns, adminDataFeedFormat, adminUpdateFormat } from './admin.table'
 import { ParsedLocation } from '@tanstack/react-router'
 import { yesnoOptions } from '@/constants'
 import { AdminPermissionForm } from './admin.premission.form'
 import { PermissionBodyResponse } from '@monolith-code-architecture/types'
 import { isUndefined } from 'es-toolkit'
+import { createAdminBodySchema } from '@monolith-code-architecture/constants'
 
 const adminAddEditForms: (location?: ParsedLocation) => AddEditFormRegistary[] = (location) => [
   {
@@ -107,7 +107,7 @@ const adminRegistary: (
         permissions: [],
       },
       forms: adminAddEditForms(location),
-      schema: addAdminSchema,
+      schema: createAdminBodySchema,
     },
     api: '/admin',
     columns: adminColumns,

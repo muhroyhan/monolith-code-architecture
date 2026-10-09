@@ -22,7 +22,7 @@ export interface Feature {
 export interface ProgramRegistary<K extends keyof Feature> {
   add: {
     defaultValues: Feature[K]['createBody']
-    schema: ZodType<Feature[K]['createBody'], Feature[K]['createBody']>
+    schema: ZodType
     forms: AddEditFormRegistary[]
   }
   api: string

@@ -20,7 +20,7 @@ export interface AdminServiceUpdateBody extends Omit<
 > {
   isActive: boolean
   isSuper: boolean
-  isDeleted: boolean
+  deletedAt: Date | null
   updatedBy: string
   permissions?: PermissionData[]
 }
