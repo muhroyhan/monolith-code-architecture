@@ -1,3 +1,5 @@
+import { PermissionBodyResponse } from './admin.type'
+
 interface ApiResponseError {
   message: string
   code: string
@@ -25,7 +27,13 @@ export interface LoginBody {
 }
 
 export interface LoginDataResponse {
-  admin: { id: string; displayName: string; isActive: boolean; isSuper: boolean }
+  admin: {
+    id: string
+    displayName: string
+    isActive: boolean
+    isSuper: boolean
+    permissions: PermissionBodyResponse[]
+  }
 }
 
 export interface TableDataResponse<T> {

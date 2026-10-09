@@ -6,6 +6,7 @@ export interface AdminData {
   isSuper: boolean
   updatedAt: Date
   updatedBy: string | null
+  permissions?: PermissionData[]
 }
 
 export interface AdminQueryRequest {
@@ -21,8 +22,17 @@ export interface AdminCreateBodyRequest {
   displayName: string
   isActive: string
   isSuper: string
+  permissions?: string[]
 }
 
 export interface AdminUpdateBodyRequest extends AdminCreateBodyRequest {
   isDeleted: string
 }
+
+export interface PermissionData {
+  id: string
+  featureName: string
+  access: 'create' | 'read' | 'update' | 'delete'
+}
+
+export interface PermissionBodyResponse extends Omit<PermissionData, 'id'> {}

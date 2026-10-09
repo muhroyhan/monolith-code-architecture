@@ -1,6 +1,7 @@
 // src/db/index.ts
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
+import relations from './relation'
 
 const DATABASE_URL =
   `postgresql://${process.env.DATABASE_USER}` +
@@ -9,4 +10,4 @@ const DATABASE_URL =
 const pool = new Pool({
   connectionString: DATABASE_URL,
 })
-export const dbClient = drizzle({ client: pool })
+export const dbClient = drizzle({ client: pool, relations })

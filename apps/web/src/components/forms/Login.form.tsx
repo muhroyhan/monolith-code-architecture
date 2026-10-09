@@ -7,7 +7,7 @@ import * as z from 'zod'
 import { Label } from '@/shadcn/components/ui/label'
 import { Input } from '@/shadcn/components/ui/input'
 import { Button } from '@/shadcn/components/ui/button'
-import { useUser } from '@/providers/User.provider'
+import { useAdmin } from '@/providers/Admin.provider'
 
 const loginRequestBodySchema = z.object({
   username: z.string(),
@@ -17,7 +17,7 @@ const loginRequestBodySchema = z.object({
 const LoginForm = () => {
   const navigate = useNavigate()
   const { isIdle, isSuccess, mutate: login, data } = useMutation(loginMutation)
-  const { setAdminName } = useUser()
+  const { setAdminName, setPermissions, setIsAdminSuper } = useAdmin()
 
   const form = useForm({
     defaultValues: {
@@ -35,6 +35,8 @@ const LoginForm = () => {
   useEffect(() => {
     if (!isIdle && isSuccess) {
       setAdminName(data?.data?.admin.displayName ?? '')
+      setPermissions(data?.data?.admin.permissions ?? [])
+      setIsAdminSuper(data?.data?.admin?.isSuper ?? false)
       navigate({
         from: '/login',
         to: '/',

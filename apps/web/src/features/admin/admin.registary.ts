@@ -3,8 +3,11 @@ import { addAdminSchema } from './admin.type'
 import { adminColumns, adminDataFeedFormat, adminUpdateFormat } from './admin.table'
 import { ParsedLocation } from '@tanstack/react-router'
 import { yesnoOptions } from '@/constants'
+import { AdminPermissionForm } from './admin.premission.form'
+import { PermissionBodyResponse } from '@monolith-code-architecture/types'
+import { isUndefined } from 'es-toolkit'
 
-const adminAddEditForms: (location: ParsedLocation) => AddEditFormRegistary[] = (location) => [
+const adminAddEditForms: (location?: ParsedLocation) => AddEditFormRegistary[] = (location) => [
   {
     name: 'username',
     type: 'text',
@@ -20,7 +23,7 @@ const adminAddEditForms: (location: ParsedLocation) => AddEditFormRegistary[] = 
   {
     name: 'password',
     type: 'password',
-    required: location.pathname.includes('add'),
+    required: location?.pathname.includes('add'),
     title: 'Password',
   },
   {
@@ -55,6 +58,12 @@ const adminAddEditForms: (location: ParsedLocation) => AddEditFormRegistary[] = 
       },
     ],
   },
+  {
+    name: 'permissions',
+    type: 'custom',
+    title: 'Permissions',
+    Component: AdminPermissionForm,
+  },
 ]
 
 const adminFilterForms: FilterFormRegistary[] = [
@@ -77,28 +86,42 @@ const adminFilterForms: FilterFormRegistary[] = [
   },
 ]
 
-const adminRegistary: (location: ParsedLocation) => ProgramRegistary<'admin'> = (location) => ({
-  add: {
-    defaultValues: {
-      displayName: '',
-      username: '',
-      password: '',
-      isActive: 'true',
-      isSuper: 'false',
+const adminRegistary: (
+  permissions?: PermissionBodyResponse[],
+  location?: ParsedLocation,
+) => ProgramRegistary<'admin'> = (permissions, location) => {
+  const adminPermissions = permissions?.filter((item) => item.featureName === 'admin')
+  const isCreateAllowed = !isUndefined(adminPermissions?.find((item) => item.access === 'create'))
+  const isReadAllowed = !isUndefined(adminPermissions?.find((item) => item.access === 'read'))
+  const isUpdateAllowed = !isUndefined(adminPermissions?.find((item) => item.access === 'update'))
+  const isDeleteAllowed = !isUndefined(adminPermissions?.find((item) => item.access === 'delete'))
+
+  return {
+    add: {
+      defaultValues: {
+        displayName: '',
+        username: '',
+        password: '',
+        isActive: 'true',
+        isSuper: 'false',
+        permissions: [],
+      },
+      forms: adminAddEditForms(location),
+      schema: addAdminSchema,
     },
-    forms: adminAddEditForms(location),
-    schema: addAdminSchema,
-  },
-  api: '/admin',
-  columns: adminColumns,
-  dataFormat: adminDataFeedFormat,
-  filters: adminFilterForms,
-  isReadAllowed: true,
-  isWriteAllowed: true,
-  name: 'Admin',
-  path: '/admin',
-  rowActions: ['edit', 'view'],
-  updateFormat: adminUpdateFormat,
-})
+    api: '/admin',
+    columns: adminColumns,
+    dataFormat: adminDataFeedFormat,
+    filters: adminFilterForms,
+    isCreateAllowed,
+    isReadAllowed,
+    isUpdateAllowed,
+    isDeleteAllowed,
+    name: 'Admin',
+    path: '/admin',
+    rowActions: ['edit', 'view'],
+    updateFormat: adminUpdateFormat,
+  }
+}
 
 export { adminRegistary }

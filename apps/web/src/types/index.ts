@@ -29,8 +29,10 @@ export interface ProgramRegistary<K extends keyof Feature> {
   columns: { [P in keyof Feature[K]['dataList']]: string }
   dataFormat: (data: Feature[K]['data']) => Feature[K]['dataFeed']
   filters?: FilterFormRegistary[]
+  isCreateAllowed: boolean
   isReadAllowed: boolean
-  isWriteAllowed: boolean
+  isUpdateAllowed: boolean
+  isDeleteAllowed: boolean
   name: string
   path: string
   rowActions: ('edit' | 'view')[]
@@ -39,7 +41,7 @@ export interface ProgramRegistary<K extends keyof Feature> {
 
 export interface AddEditFormRegistary {
   name: string
-  type: 'text' | 'select' | 'radio' | 'password'
+  type: 'text' | 'select' | 'radio' | 'password' | 'custom'
   required?: boolean
   disabled?: boolean
   title?: string
@@ -48,6 +50,7 @@ export interface AddEditFormRegistary {
     label: string
     value: string
   }[]
+  Component?: React.JSX.ElementType
 }
 
 export interface FilterFormRegistary {

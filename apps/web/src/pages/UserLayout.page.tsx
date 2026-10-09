@@ -4,11 +4,11 @@ import { ContentComponent } from '@/components/Content.component'
 import { SidebarComponent } from '@/components/Sidebar.component'
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { useUser } from '@/providers/User.provider'
+import { useAdmin } from '@/providers/Admin.provider'
 
 const UserLayoutPage = () => {
   const navigate = useNavigate()
-  const { adminName } = useUser()
+  const { adminName } = useAdmin()
 
   useEffect(() => {
     if (!adminName) navigate({ replace: true, to: '/login' })

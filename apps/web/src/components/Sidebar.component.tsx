@@ -3,7 +3,7 @@ import { Button } from '@/shadcn/components/ui/button'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { useUser } from '@/providers/User.provider'
+import { useAdmin } from '@/providers/Admin.provider'
 import {
   Sidebar,
   SidebarContent,
@@ -22,13 +22,16 @@ import { toast } from 'sonner'
 const SidebarComponent = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const { adminName, setAdminName } = useUser()
+  const { adminName, setAdminName, permissions, setPermissions, isAdminSuper, setIsAdminSuper } =
+    useAdmin()
   const { isIdle, isSuccess, mutate } = useMutation(logoutMutation)
 
   useEffect(() => {
     if (!isIdle && isSuccess) {
       toast.success(`See You ${adminName}!`)
       setAdminName('')
+      setPermissions([])
+      setIsAdminSuper(false)
       navigate({
         from: location.pathname,
         to: '/login',
@@ -36,7 +39,10 @@ const SidebarComponent = () => {
     }
   }, [isIdle, isSuccess])
 
-  const programList = Object.values(programs(location))
+  const programList = Object.values(programs(permissions, location)).filter((item) => {
+    if (isAdminSuper) return true
+    return item.name !== 'Admin'
+  })
 
   return (
     <Sidebar>

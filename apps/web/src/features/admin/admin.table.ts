@@ -23,11 +23,13 @@ export const adminDataFeedFormat = (data: AdminData): AdminDataFeed => {
 }
 
 export const adminUpdateFormat = (data: AdminData): Partial<AdminUpdateBodyRequest> => {
+  const permissions = data.permissions?.map((item) => `${item.featureName}:${item.access}`)
   return {
     username: data?.username ?? '',
     displayName: data?.displayName ?? '',
     password: '',
     isActive: String(data.isActive),
     isSuper: String(data.isSuper),
+    permissions,
   }
 }

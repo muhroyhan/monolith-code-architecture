@@ -1,4 +1,14 @@
-import { boolean, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  unique,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core'
 
 export const adminTable = pgTable('admin', {
   id: uuid('id').primaryKey().defaultRandom().unique(),
@@ -17,3 +27,28 @@ export const adminTable = pgTable('admin', {
   deletedAt: timestamp('deleted_at'),
   deletedBy: varchar('deleted_by', { length: 25 }),
 })
+
+export const permissionAccess = pgEnum('permission_access', ['create', 'read', 'update', 'delete'])
+
+export const permissionTable = pgTable(
+  'permission',
+  {
+    id: uuid('id').primaryKey().defaultRandom().unique(),
+    featureName: varchar('feature_name', { length: 25 }).notNull(),
+    access: permissionAccess('access').default('read').notNull(),
+  },
+  (t) => [unique('feature_name_access_unique').on(t.featureName, t.access)],
+)
+
+export const adminPermissionTable = pgTable(
+  'admin_permission',
+  {
+    adminId: uuid('admin_id')
+      .notNull()
+      .references(() => adminTable.id),
+    permissionId: uuid('permission_id')
+      .notNull()
+      .references(() => permissionTable.id),
+  },
+  (t) => [primaryKey({ columns: [t.adminId, t.permissionId] })],
+)

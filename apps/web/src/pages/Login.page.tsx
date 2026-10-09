@@ -6,13 +6,13 @@ import {
   CardTitle,
 } from '@/shadcn/components/ui/card'
 import { LoginForm } from '@/components/forms/Login.form'
-import { useUser } from '@/providers/User.provider'
+import { useAdmin } from '@/providers/Admin.provider'
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 const LoginPage = () => {
   const navigate = useNavigate()
-  const { adminName } = useUser()
+  const { adminName } = useAdmin()
 
   useEffect(() => {
     if (adminName) navigate({ replace: true, to: '/' })

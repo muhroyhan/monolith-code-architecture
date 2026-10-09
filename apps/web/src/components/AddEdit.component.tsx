@@ -101,7 +101,8 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
               )}
             />,
           )
-        } else {
+        }
+        if (item.type === 'text' || item.type === 'password') {
           comps.push(
             <form.Field
               key={key}
@@ -118,6 +119,22 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
                   value={String(field.state.value)}
                 />
               )}
+            />,
+          )
+        }
+        if (item.type === 'custom') {
+          comps.push(
+            <form.Field
+              key={key}
+              name={item.name}
+              children={(field) =>
+                item.Component && (
+                  <item.Component
+                    field={field}
+                    {...item}
+                  />
+                )
+              }
             />,
           )
         }

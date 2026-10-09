@@ -59,8 +59,8 @@ const adminController = () => {
         password: hashedPass,
         isActive: req.body.isActive === 'true',
         isSuper: req.body.isSuper === 'true',
-        createdBy: req.session.displayName ?? '',
-        updatedBy: req.session.displayName ?? '',
+        createdBy: req.session.admin?.displayName ?? '',
+        updatedBy: req.session.admin?.displayName ?? '',
       })
       res.status(200).send({ success: true })
     },
@@ -68,30 +68,14 @@ const adminController = () => {
       req: Request<{ id: string }, {}, Partial<AdminUpdateBodyRequest>>,
       res: Response<ApiResponseBody>,
     ) => {
-      let body: object = {
-        ...req.body,
-        updatedBy: req.session.displayName ?? '',
-      }
-      if (req.body.password) {
-        const hashedPass = await hash(req.body.password)
-        body = { ...body, password: hashedPass }
-      }
-      if (req.body.isActive) {
-        body = { ...body, isActive: req.body.isActive === 'true' }
-      }
-      if (req.body.isSuper) {
-        body = { ...body, isSuper: req.body.isSuper === 'true' }
-      }
-      if (req.body.isDeleted) {
-        body = { ...body, isDeleted: req.body.isDeleted === 'true' }
-      }
-      await service.update(req.params.id, body)
+      const input = await service.getUpdateValues(req.body)
+      await service.update(req.params.id, input)
       res.status(200).send({ success: true })
     },
     delete: async (req: Request<{ id: string }>, res: Response<ApiResponseBody>) => {
       await service.delete(req.params.id, {
         deletedAt: new Date(),
-        deletedBy: req.session.displayName || '',
+        deletedBy: req.session.admin?.displayName || '',
       })
       res.status(200).send({ success: true })
     },
