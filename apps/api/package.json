@@ -1,0 +1,45 @@
+{
+  "name": "@monolith-code-architecture/api",
+  "type": "module",
+  "scripts": {
+    "build": "tsdown src/index.ts --format esm --clean",
+    "dev": "tsx watch src/index.ts",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "start": "node dist/index.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@monolith-code-architecture/constants": "workspace:*",
+    "@monolith-code-architecture/types": "workspace:*",
+    "argon2": "^0.45.1",
+    "compression": "^1.8.2",
+    "connect-redis": "^10.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.4",
+    "drizzle-orm": "1.0.0-rc.4",
+    "errorhandler": "^1.5.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "express-session": "^1.19.0",
+    "morgan": "^1.12.1",
+    "pg": "^8.23.0",
+    "redis": "^6.2.1"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/connect-redis": "^0.0.23",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/errorhandler": "^1.5.3",
+    "@types/express": "^5.0.6",
+    "@types/express-session": "^1.19.0",
+    "@types/morgan": "^1.9.10",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "1.0.0-rc.4",
+    "tsdown": "^0.23.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

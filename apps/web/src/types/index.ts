@@ -1,0 +1,65 @@
+import { AdminDataFeed, AdminListData } from '@/features/admin/admin.type'
+import {
+  AdminCreateUpdateBodyRequest,
+  AdminData,
+  AdminQueryRequest,
+  BaseQueryRequest,
+} from '@monolith-code-architecture/types'
+import { ZodObject } from 'zod'
+
+export interface Feature {
+  admin: {
+    createBody: AdminCreateUpdateBodyRequest
+    data: AdminData
+    dataFeed: AdminDataFeed
+    dataList: AdminListData
+    queryparam: BaseQueryRequest<AdminQueryRequest>
+    updateBody: Partial<AdminCreateUpdateBodyRequest>
+  }
+}
+
+export interface ProgramRegistary<K extends keyof Feature> {
+  add: {
+    defaultValues: Feature[K]['createBody']
+    schema: ZodObject
+    forms: AddEditFormRegistary[]
+  }
+  api: string
+  columns: { [P in keyof Feature[K]['dataList']]: string }
+  dataFormat: (data: Feature[K]['data']) => Feature[K]['dataFeed']
+  filters?: FilterFormRegistary[]
+  isCreateAllowed: boolean
+  isReadAllowed: boolean
+  isUpdateAllowed: boolean
+  isDeleteAllowed: boolean
+  name: string
+  path: string
+  rowActions: ('edit' | 'view')[]
+  updateFormat: (data: Feature[K]['data']) => Feature[K]['updateBody']
+}
+
+export interface AddEditFormRegistary {
+  name: string
+  type: 'text' | 'select' | 'radio' | 'password' | 'custom'
+  required?: boolean
+  disabled?: boolean
+  label?: string
+  placeholder?: string
+  options?: {
+    label: string
+    value: string
+  }[]
+  Component?: React.JSX.ElementType
+}
+
+export interface FilterFormRegistary {
+  name: string
+  type: 'text' | 'select' | 'radio'
+  required?: boolean
+  disabled?: boolean
+  placeholder?: string
+  options?: {
+    label: string
+    value: string | number | boolean
+  }[]
+}

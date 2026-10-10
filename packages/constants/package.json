@@ -1,0 +1,6 @@
+{
+  "name": "@monolith-code-architecture/constants",
+  "private": true,
+  "type": "module",
+  "main": "./index.ts"
+}
