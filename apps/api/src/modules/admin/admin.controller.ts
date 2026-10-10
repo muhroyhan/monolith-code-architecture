@@ -1,9 +1,8 @@
 import { type Request, type Response } from 'express'
 import {
-  AdminCreateBodyRequest,
+  AdminCreateUpdateBodyRequest,
   AdminData,
   AdminQueryRequest,
-  AdminUpdateBodyRequest,
   ApiResponseBody,
   BaseQueryRequest,
   TableDataResponse,
@@ -49,7 +48,7 @@ const adminController = () => {
       res.status(200).send({ success: true, data })
     },
     create: async (
-      req: Request<{}, {}, AdminCreateBodyRequest>,
+      req: Request<{}, {}, AdminCreateUpdateBodyRequest>,
       res: Response<ApiResponseBody>,
     ) => {
       const admin = await service.findByUsername(req.body.username)
@@ -69,7 +68,7 @@ const adminController = () => {
       res.status(200).send({ success: true })
     },
     update: async (
-      req: Request<{ id: string }, {}, Partial<AdminUpdateBodyRequest>>,
+      req: Request<{ id: string }, {}, Partial<AdminCreateUpdateBodyRequest>>,
       res: Response<ApiResponseBody>,
     ) => {
       const input = await service.getUpdateValues(req.body)

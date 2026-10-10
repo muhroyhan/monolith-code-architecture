@@ -16,17 +16,13 @@ export interface AdminQueryRequest {
   isDeleted?: boolean
 }
 
-export interface AdminCreateBodyRequest {
+export interface AdminCreateUpdateBodyRequest {
   password: string
   username: string
   displayName: string
   isActive: string
   isSuper: string
   permissions?: string[]
-}
-
-export interface AdminUpdateBodyRequest extends AdminCreateBodyRequest {
-  isDeleted: string
 }
 
 export interface PermissionData {

@@ -1,4 +1,4 @@
-import { AdminData, AdminUpdateBodyRequest } from '@monolith-code-architecture/types'
+import { AdminData, AdminCreateUpdateBodyRequest } from '@monolith-code-architecture/types'
 import { AdminDataFeed } from './admin.type'
 
 export const adminColumns = {
@@ -22,7 +22,7 @@ export const adminDataFeedFormat = (data: AdminData): AdminDataFeed => {
   }
 }
 
-export const adminUpdateFormat = (data: AdminData): Partial<AdminUpdateBodyRequest> => {
+export const adminUpdateFormat = (data: AdminData): Partial<AdminCreateUpdateBodyRequest> => {
   const permissions = data.permissions?.map((item) => `${item.featureName}:${item.access}`)
   return {
     username: data?.username ?? '',

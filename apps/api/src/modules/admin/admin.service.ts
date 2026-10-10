@@ -3,7 +3,7 @@ import { adminPermissionTable, adminTable } from '@/db/schema'
 import {
   AdminData,
   AdminQueryRequest,
-  AdminUpdateBodyRequest,
+  AdminCreateUpdateBodyRequest,
   PaginationQueryRequest,
   PermissionData,
 } from '@monolith-code-architecture/types'
@@ -36,8 +36,15 @@ const adminService = () => ({
       )
     return and(...where)
   },
-  getUpdateValues: async (body: Partial<AdminUpdateBodyRequest>) => {
+  getUpdateValues: async (body: Partial<AdminCreateUpdateBodyRequest>) => {
     let newBody: Partial<AdminServiceUpdateBody> = {}
+
+    if (body.username) {
+      newBody = { ...newBody, username: body.username }
+    }
+    if (body.displayName) {
+      newBody = { ...newBody, displayName: body.displayName }
+    }
     if (body.password) {
       const hashedPass = await hash(body.password)
       newBody = { ...newBody, password: hashedPass }
@@ -47,9 +54,6 @@ const adminService = () => ({
     }
     if (body.isSuper) {
       newBody = { ...newBody, isSuper: body.isSuper === 'true' }
-    }
-    if (body.isDeleted) {
-      newBody = { ...newBody, deletedAt: body.isDeleted === 'true' ? new Date() : null }
     }
     if (body.permissions) {
       newBody = {

@@ -1,11 +1,7 @@
-import {
-  AdminCreateBodyRequest,
-  AdminUpdateBodyRequest,
-  PermissionData,
-} from '@monolith-code-architecture/types'
+import { AdminCreateUpdateBodyRequest, PermissionData } from '@monolith-code-architecture/types'
 
 export interface AdminServiceCreateBody extends Omit<
-  AdminCreateBodyRequest,
+  AdminCreateUpdateBodyRequest,
   'isActive' | 'isSuper' | 'permissions'
 > {
   isActive: boolean
@@ -15,12 +11,11 @@ export interface AdminServiceCreateBody extends Omit<
   permissions?: string[]
 }
 export interface AdminServiceUpdateBody extends Omit<
-  AdminUpdateBodyRequest,
-  'isActive' | 'isSuper' | 'isDeleted' | 'id' | 'permissions'
+  AdminCreateUpdateBodyRequest,
+  'isActive' | 'isSuper' | 'id' | 'permissions'
 > {
   isActive: boolean
   isSuper: boolean
-  deletedAt: Date | null
   updatedBy: string
   permissions?: PermissionData[]
 }

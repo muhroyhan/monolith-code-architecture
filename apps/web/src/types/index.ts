@@ -1,21 +1,20 @@
 import { AdminDataFeed, AdminListData } from '@/features/admin/admin.type'
 import {
-  AdminCreateBodyRequest,
+  AdminCreateUpdateBodyRequest,
   AdminData,
   AdminQueryRequest,
-  AdminUpdateBodyRequest,
   BaseQueryRequest,
 } from '@monolith-code-architecture/types'
 import { ZodObject } from 'zod'
 
 export interface Feature {
   admin: {
-    createBody: AdminCreateBodyRequest
+    createBody: AdminCreateUpdateBodyRequest
     data: AdminData
     dataFeed: AdminDataFeed
     dataList: AdminListData
     queryparam: BaseQueryRequest<AdminQueryRequest>
-    updateBody: Partial<AdminUpdateBodyRequest>
+    updateBody: Partial<AdminCreateUpdateBodyRequest>
   }
 }
 
