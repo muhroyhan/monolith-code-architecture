@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shadcn/components/ui/card'
-import { LoginForm } from '@/components/forms/Login.form'
+import { LoginForm } from '@/features/login/Login.form'
 import { useAdmin } from '@/providers/Admin.provider'
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'

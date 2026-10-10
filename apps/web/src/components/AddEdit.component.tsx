@@ -1,9 +1,6 @@
 import { get } from '@/api/client'
 import { useFeatureMutation } from '@/hooks/use_feature_mutation'
 import { Button } from '@/shadcn/components/ui/button'
-import { Input } from '@/shadcn/components/ui/input'
-import { Label } from '@/shadcn/components/ui/label'
-import { ToggleGroup, ToggleGroupItem } from '@/shadcn/components/ui/toggle-group'
 import { Feature, ProgramRegistary } from '@/types'
 import { differenceByObject } from '@/utils/difference_by_object'
 import { ApiResponseBody } from '@monolith-code-architecture/types'
@@ -11,6 +8,9 @@ import { useForm } from '@tanstack/react-form'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLocation, useNavigate, useParams } from '@tanstack/react-router'
 import { useEffect } from 'react'
+import ToggleForm from './form/Toggle.form'
+import InputForm from './form/Input.form'
+import SelectForm from './form/Select.form'
 
 const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) => {
   const { id } = useParams({ strict: false })
@@ -47,6 +47,7 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
     validators: {
       onSubmit: props.add.schema,
     },
+    canSubmitWhenInvalid: true,
     onSubmit: async ({ value }) => {
       const values = isAddPage ? value : differenceByObject(defaultValues, value)
       mutate(values)
@@ -74,30 +75,41 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
       }}
     >
       {props.add.forms.reduce<React.JSX.Element[]>((comps, item, key) => {
-        if (item.title) comps.push(<Label key={key + '-l'}>{item.title}</Label>)
         if (item.type === 'radio') {
           comps.push(
             <form.Field
               key={key}
               name={item.name}
               children={(field) => (
-                <ToggleGroup
-                  onBlur={field.handleBlur}
-                  onValueChange={(val) => {
-                    if (!!val) field.handleChange(val as any)
-                  }}
+                <ToggleForm
+                  label={item.label}
+                  disabled={item.disabled}
+                  field={field}
+                  options={item.options}
                   type="single"
-                  value={String(field.state.value)}
-                >
-                  {item.options?.map((i, k) => (
-                    <ToggleGroupItem
-                      key={k}
-                      value={i.value}
-                    >
-                      {i.label}
-                    </ToggleGroupItem>
-                  ))}
-                </ToggleGroup>
+                />
+              )}
+            />,
+          )
+        }
+        if (item.type === 'select') {
+          comps.push(
+            <form.Field
+              key={key}
+              name={item.name}
+              children={(field) => (
+                <SelectForm
+                  className="flex-1"
+                  disabled={item.disabled}
+                  field={field}
+                  label={item.label}
+                  onValueChange={() => {
+                    form.handleSubmit()
+                  }}
+                  required={item.required}
+                  placeholder={item.placeholder}
+                  options={item.options}
+                />
               )}
             />,
           )
@@ -108,15 +120,13 @@ const AddEditComponent = <K extends keyof Feature>(props: ProgramRegistary<K>) =
               key={key}
               name={item.name}
               children={(field) => (
-                <Input
-                  onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value as any)
-                  }}
+                <InputForm
+                  label={item.label}
+                  disabled={item.disabled}
+                  field={field}
                   placeholder={item?.placeholder ?? 'Enter Text...'}
                   required={item.required}
                   type={item.type}
-                  value={String(field.state.value)}
                 />
               )}
             />,

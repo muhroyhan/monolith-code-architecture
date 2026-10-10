@@ -12,25 +12,25 @@ const adminAddEditForms: (location?: ParsedLocation) => AddEditFormRegistary[] =
     name: 'username',
     type: 'text',
     required: true,
-    title: 'Username',
+    label: 'Username',
   },
   {
     name: 'displayName',
     type: 'text',
     required: true,
-    title: 'Display Name',
+    label: 'Display Name',
   },
   {
     name: 'password',
     type: 'password',
     required: location?.pathname.includes('add'),
-    title: 'Password',
+    label: 'Password',
   },
   {
     name: 'isActive',
     type: 'radio',
     required: true,
-    title: 'Active Status',
+    label: 'Active Status',
     options: [
       {
         label: 'YES',
@@ -46,7 +46,7 @@ const adminAddEditForms: (location?: ParsedLocation) => AddEditFormRegistary[] =
     name: 'isSuper',
     type: 'radio',
     required: true,
-    title: 'Superadmin Status',
+    label: 'Superadmin Status',
     options: [
       {
         label: 'YES',
@@ -68,18 +68,18 @@ const adminAddEditForms: (location?: ParsedLocation) => AddEditFormRegistary[] =
 
 const adminFilterForms: FilterFormRegistary[] = [
   {
-    label: 'Display Name / Username',
+    placeholder: 'Display Name / Username',
     name: 'name',
     type: 'text',
   },
   {
-    label: 'Active?',
+    placeholder: 'Active?',
     name: 'isActive',
     type: 'select',
     options: yesnoOptions,
   },
   {
-    label: 'Superadmin?',
+    placeholder: 'Superadmin?',
     name: 'isSuper',
     type: 'select',
     options: yesnoOptions,

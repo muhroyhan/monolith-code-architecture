@@ -6,7 +6,7 @@ import {
   AdminUpdateBodyRequest,
   BaseQueryRequest,
 } from '@monolith-code-architecture/types'
-import { ZodType } from 'zod'
+import { ZodObject } from 'zod'
 
 export interface Feature {
   admin: {
@@ -22,7 +22,7 @@ export interface Feature {
 export interface ProgramRegistary<K extends keyof Feature> {
   add: {
     defaultValues: Feature[K]['createBody']
-    schema: ZodType
+    schema: ZodObject
     forms: AddEditFormRegistary[]
   }
   api: string
@@ -44,7 +44,7 @@ export interface AddEditFormRegistary {
   type: 'text' | 'select' | 'radio' | 'password' | 'custom'
   required?: boolean
   disabled?: boolean
-  title?: string
+  label?: string
   placeholder?: string
   options?: {
     label: string
@@ -58,7 +58,6 @@ export interface FilterFormRegistary {
   type: 'text' | 'select' | 'radio'
   required?: boolean
   disabled?: boolean
-  label?: string
   placeholder?: string
   options?: {
     label: string

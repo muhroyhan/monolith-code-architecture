@@ -31,20 +31,18 @@ export const getAdminQuerySchema = z.object({
   page: PaginationQuerySchema,
 })
 
-export const createAdminBodySchema = loginBodySchema.extend(
-  z.object({
-    displayName: z.string(),
-    isActive: z.enum(['true', 'false']),
-    isSuper: z.enum(['true', 'false']),
-    permissions: z.array(z.string()).optional(),
-  }),
-)
+export const createAdminBodySchema = loginBodySchema.extend({
+  displayName: z.string(),
+  isActive: z.enum(['true', 'false']),
+  isSuper: z.enum(['true', 'false']),
+  permissions: z.array(z.string()).optional(),
+})
 
 export const updateAdminBodySchema = z.object({
   username: z
     .string()
     .min(3, { message: 'Username must be at least 3 characters long' })
-    .max(20, { message: 'Username cannot exceed 20 characters' })
+    .max(25, { message: 'Username cannot exceed 25 characters' })
     .optional(),
   password: z
     .string()

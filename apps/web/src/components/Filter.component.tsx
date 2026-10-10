@@ -1,17 +1,11 @@
 import { Button } from '@/shadcn/components/ui/button'
-import { Input } from '@/shadcn/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shadcn/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/shadcn/components/ui/toggle-group'
 import { Feature, ProgramRegistary } from '@/types'
 import { useForm } from '@tanstack/react-form'
 import { useNavigate, useSearch } from '@tanstack/react-router'
+import InputForm from './form/Input.form'
+import ToggleForm from './form/Toggle.form'
+import SelectForm from './form/Select.form'
+import { pickBy } from 'es-toolkit'
 
 const FilterComponent = <K extends keyof Feature>(props: {
   filters: ProgramRegistary<K>['filters']
@@ -28,13 +22,17 @@ const FilterComponent = <K extends keyof Feature>(props: {
   const form = useForm({
     defaultValues,
     onSubmit: async ({ value }) => {
+      const filteredSearch = pickBy(
+        {
+          ...search['filters'],
+          ...value,
+        },
+        (value) => value && value.length > 0,
+      )
       navigate({
         search: {
           ...search,
-          filters: {
-            ...search['filters'],
-            ...value,
-          },
+          filters: filteredSearch,
         },
       })
     },
@@ -57,25 +55,16 @@ const FilterComponent = <K extends keyof Feature>(props: {
               key={key}
               name={filter.name}
               children={(field) => (
-                <ToggleGroup
+                <ToggleForm
                   className="flex-1"
-                  onBlur={field.handleBlur}
-                  onValueChange={(val) => {
-                    if (!!val) field.handleChange(val as any)
+                  disabled={filter.disabled}
+                  field={field}
+                  onValueChange={() => {
                     form.handleSubmit()
                   }}
+                  options={filter.options}
                   type="single"
-                  value={String(field.state.value)}
-                >
-                  {filter.options?.map((i, k) => (
-                    <ToggleGroupItem
-                      key={k}
-                      value={i.value}
-                    >
-                      {i.label}
-                    </ToggleGroupItem>
-                  ))}
-                </ToggleGroup>
+                />
               )}
             />,
           )
@@ -85,33 +74,17 @@ const FilterComponent = <K extends keyof Feature>(props: {
               key={key}
               name={filter.name}
               children={(field) => (
-                <Select
-                  onValueChange={(value: string) => {
-                    field.handleChange(value)
+                <SelectForm
+                  className="flex-1"
+                  disabled={filter.disabled}
+                  field={field}
+                  onValueChange={() => {
                     form.handleSubmit()
                   }}
                   required={filter.required}
-                  value={String(field.state.value)}
-                >
-                  <SelectTrigger className="flex-1">
-                    <SelectValue placeholder={filter.label} />
-                  </SelectTrigger>
-                  <SelectContent
-                    position="popper"
-                    aria-required={filter.required}
-                  >
-                    <SelectGroup>
-                      {filter.options?.map((item, key) => (
-                        <SelectItem
-                          key={key}
-                          value={item.value}
-                        >
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                  placeholder={filter.placeholder}
+                  options={filter.options}
+                />
               )}
             />,
           )
@@ -121,17 +94,16 @@ const FilterComponent = <K extends keyof Feature>(props: {
               key={key}
               name={filter.name}
               children={(field) => (
-                <Input
+                <InputForm
                   className="flex-1"
-                  onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value as any)
+                  disabled={filter.disabled}
+                  field={field}
+                  onChange={() => {
                     form.handleSubmit()
                   }}
-                  placeholder={filter.label}
+                  placeholder={filter.placeholder}
                   required={filter.required}
                   type={filter.type}
-                  value={String(field.state.value)}
                 />
               )}
             />,
