@@ -84,6 +84,12 @@ const adminFilterForms: FilterFormRegistary[] = [
     type: 'select',
     options: yesnoOptions,
   },
+  {
+    placeholder: 'Deleted?',
+    name: 'isDeleted',
+    type: 'select',
+    options: yesnoOptions,
+  },
 ]
 
 const adminRegistary: (

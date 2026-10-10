@@ -23,10 +23,10 @@ const adminService = () => ({
   getWhere: (query?: AdminQueryRequest): SQL | undefined => {
     if (!query) return undefined
     const where: SQL[] = []
-    if (!!query.isDeleted) where.push(isNotNull(adminTable.deletedAt))
+    if (query.isDeleted === 'true') where.push(isNotNull(adminTable.deletedAt))
     else where.push(isNull(adminTable.deletedAt))
-    if (!!query.isActive) where.push(eq(adminTable.isActive, query.isActive))
-    if (!!query.isSuper) where.push(eq(adminTable.isSuper, query.isSuper))
+    if (!!query.isActive) where.push(eq(adminTable.isActive, query.isActive === 'true'))
+    if (!!query.isSuper) where.push(eq(adminTable.isSuper, query.isSuper === 'true'))
     if (!!query.name)
       where.push(
         or(

@@ -11,9 +11,9 @@ export interface AdminData {
 
 export interface AdminQueryRequest {
   name?: string
-  isActive?: boolean
-  isSuper?: boolean
-  isDeleted?: boolean
+  isActive?: string
+  isSuper?: string
+  isDeleted?: string
 }
 
 export interface AdminCreateUpdateBodyRequest {

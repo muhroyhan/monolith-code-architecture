@@ -1,7 +1,7 @@
 import z from 'zod'
 
 const PaginationQuerySchema = z.object({
-  number: z.string().regex(/^\d+$/),
+  number: z.coerce.number().positive().min(1, 'Must be a number greater than 0'),
   size: z.enum(['10', '25', '50', '100']),
 })
 

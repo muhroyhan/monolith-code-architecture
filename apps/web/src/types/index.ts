@@ -60,6 +60,6 @@ export interface FilterFormRegistary {
   placeholder?: string
   options?: {
     label: string
-    value: string
+    value: string | number | boolean
   }[]
 }
