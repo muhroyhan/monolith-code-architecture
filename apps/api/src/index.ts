@@ -1,5 +1,5 @@
 import './env.config'
-import express, { type Express } from 'express'
+import express from 'express'
 import { notFoundHandler } from './middlewares/notFoundHandler'
 import { router } from './router'
 import compression from 'compression'
@@ -11,19 +11,11 @@ import { RedisStore } from 'connect-redis'
 import session from 'express-session'
 import { errorHandler } from './middlewares/errorHandler'
 import { cookieConfig, cookieSessionName, maxAgeInSeconds } from './constants/cookie.constant'
-import { rateLimit } from 'express-rate-limit'
+import { generateReqId } from './middlewares/generateReqId'
 
-const app: Express = express()
+const app = express()
 
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: 'Too many requests from this IP, please try again after 15 minutes',
-  }),
-)
+app.use(generateReqId)
 app.set('query parser', 'extended')
 app.use(
   cors({

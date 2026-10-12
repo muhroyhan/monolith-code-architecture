@@ -13,6 +13,19 @@ const errorHandler = (
   const code = err instanceof ApiError ? err.code : 'INTERNAL_SERVER_ERROR'
   const message = err.message || 'An unexpected error occurred.'
 
+  if (statusCode >= 500) {
+    console.error({
+      requestId: res.locals.requestId,
+      details: err,
+    })
+    return res.status(statusCode).json({
+      success: false,
+      error: {
+        message: 'Internal Server Error',
+        code,
+      },
+    })
+  }
   return res.status(statusCode).json({
     success: false,
     error: {

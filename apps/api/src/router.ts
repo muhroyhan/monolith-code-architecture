@@ -4,6 +4,7 @@ import { adminRouter } from './modules/admin/admin.router'
 import { requireAuth } from './middlewares/requireAuth'
 import { ApiResponseBody } from '@monolith-code-architecture/types'
 import { verifyCsrf } from './middlewares/verifyCsrf'
+import { verifyRequestOrigin } from './middlewares/verifyRequestOrigin'
 
 const router = () => {
   const appRouter = express.Router()
@@ -15,6 +16,7 @@ const router = () => {
     })
   })
   appRouter.use('/auth', authRouter())
+  appRouter.use(verifyRequestOrigin)
   appRouter.use(verifyCsrf)
   appRouter.use('/admin', requireAuth, adminRouter())
 
