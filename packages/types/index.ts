@@ -34,6 +34,7 @@ export interface LoginDataResponse {
     isSuper: boolean
     permissions: PermissionBodyResponse[]
   }
+  csrfToken: string
 }
 
 export interface TableDataResponse<T> {

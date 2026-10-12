@@ -7,6 +7,7 @@ import { Button } from '@/shadcn/components/ui/button'
 import { useAdmin } from '@/providers/Admin.provider'
 import { loginBodySchema } from '@monolith-code-architecture/constants'
 import InputForm from '@/components/form/Input.form'
+import { axiosInstance } from '@/api/client'
 
 const LoginForm = () => {
   const navigate = useNavigate()
@@ -32,6 +33,7 @@ const LoginForm = () => {
       setAdminName(data?.data?.admin.displayName ?? '')
       setPermissions(data?.data?.admin.permissions ?? [])
       setIsAdminSuper(data?.data?.admin?.isSuper ?? false)
+      axiosInstance.defaults.headers.common['X-CSRF-Token'] = data?.data?.csrfToken
       navigate({
         from: '/login',
         to: '/',

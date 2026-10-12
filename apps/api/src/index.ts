@@ -29,6 +29,8 @@ app.use(
   cors({
     credentials: true,
     origin: process.env.WEB_ORIGIN,
+    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'X-CSRF-Token'],
   }),
 )
 app.use(express.json())
