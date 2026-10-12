@@ -59,7 +59,7 @@ const requireAuth: RequestHandler = async (req: Request, res: Response<ApiRespon
     res.status(401).json({
       success: false,
       error: {
-        message: 'You account is not active',
+        message: 'Your account is not active',
         code: 'UNAUTORIZED',
       },
     })

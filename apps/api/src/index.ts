@@ -53,7 +53,24 @@ app.use(
   }),
 )
 
-app.use(morgan('combined'))
+app.use(
+  morgan((tokens, req, res) => {
+    return JSON.stringify({
+      // --- IDENTIFICATION & TRACING (LEFT) ---
+      t: new Date().toISOString(),
+      lvl: res.statusCode >= 400 ? 'WARN' : 'INFO',
+      id: res.locals.requestId,
+
+      // --- ACTION & RESPONSE (MIDDLE) ---
+      m: tokens.method(req, res),
+      s: Number(tokens.status(req, res)),
+
+      // --- TARGET & PERFORMANCE (RIGHT) ---
+      p: req.baseUrl + req.path,
+      ms: Number(tokens['response-time'](req, res)),
+    })
+  }),
+)
 
 app.use(router())
 app.use(notFoundHandler)

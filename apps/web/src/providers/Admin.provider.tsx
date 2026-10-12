@@ -6,6 +6,23 @@ import {
 } from '@monolith-code-architecture/constants'
 import { PermissionBodyResponse } from '@monolith-code-architecture/types'
 
+const safeDecode = (value?: string) => {
+  try {
+    return value ? decodeURIComponent(value) : undefined
+  } catch {
+    return undefined
+  }
+}
+
+const safePermissions = (value?: string): PermissionBodyResponse[] => {
+  try {
+    const parsed = JSON.parse(safeDecode(value) ?? '[]')
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
 const AdminContext = createContext<{
   adminName?: string
   setAdminName: React.Dispatch<React.SetStateAction<string | undefined>>
@@ -31,18 +48,12 @@ const AdminProvider = ({ children }: { children: ReactNode }) => {
       const value = split[1]
       return { ...obj, [key]: value }
     }, {})
-  const [adminName, setAdminName] = useState(
-    splittedCookie[adminNameCookieName]
-      ? decodeURIComponent(splittedCookie[adminNameCookieName])
-      : undefined,
-  )
+  const [adminName, setAdminName] = useState(safeDecode(splittedCookie[adminNameCookieName]))
   const [permissions, setPermissions] = useState(
-    splittedCookie[adminPermissionCookieName]
-      ? JSON.parse(decodeURIComponent(splittedCookie[adminPermissionCookieName]))
-      : [],
+    safePermissions(splittedCookie[adminPermissionCookieName]),
   )
   const [isAdminSuper, setIsAdminSuper] = useState(
-    decodeURIComponent(splittedCookie[superadminCookieName]) === 'true',
+    safeDecode(splittedCookie[superadminCookieName]) === 'true',
   )
   return (
     <AdminContext
