@@ -21,13 +21,12 @@ import { ApiError } from '@/classes/ApiError'
 
 const adminService = () => ({
   getWhere: (query?: AdminQueryRequest): SQL | undefined => {
-    if (!query) return undefined
     const where: SQL[] = []
-    if (query.isDeleted === 'true') where.push(isNotNull(adminTable.deletedAt))
+    if (query?.isDeleted === 'true') where.push(isNotNull(adminTable.deletedAt))
     else where.push(isNull(adminTable.deletedAt))
-    if (!!query.isActive) where.push(eq(adminTable.isActive, query.isActive === 'true'))
-    if (!!query.isSuper) where.push(eq(adminTable.isSuper, query.isSuper === 'true'))
-    if (!!query.name)
+    if (!!query?.isActive) where.push(eq(adminTable.isActive, query.isActive === 'true'))
+    if (!!query?.isSuper) where.push(eq(adminTable.isSuper, query.isSuper === 'true'))
+    if (!!query?.name)
       where.push(
         or(
           like(adminTable.username, `%${query.name}%`),
@@ -93,7 +92,7 @@ const adminService = () => ({
     const admins = await dbClient.select({ count: count() }).from(adminTable).where(query)
     return admins[0].count
   },
-  findById: async (id: string): Promise<AdminData | undefined> => {
+  findById: async (id: string): Promise<AdminData> => {
     const admin = await dbClient.query.adminTable.findFirst({
       columns: {
         id: true,
@@ -109,7 +108,7 @@ const adminService = () => ({
         permissions: true,
       },
     })
-    return admin
+    return admin ?? <AdminData>{}
   },
   findByUsername: async (username: string): Promise<AdminData | undefined> => {
     const admin = await dbClient.query.adminTable.findFirst({

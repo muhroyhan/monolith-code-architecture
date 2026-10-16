@@ -1,5 +1,5 @@
 import './env.config'
-import express, { type Express } from 'express'
+import express from 'express'
 import { notFoundHandler } from './middlewares/notFoundHandler'
 import { router } from './router'
 import compression from 'compression'
@@ -11,24 +11,18 @@ import { RedisStore } from 'connect-redis'
 import session from 'express-session'
 import { errorHandler } from './middlewares/errorHandler'
 import { cookieConfig, cookieSessionName, maxAgeInSeconds } from './constants/cookie.constant'
-import { rateLimit } from 'express-rate-limit'
+import { generateReqId } from './middlewares/generateReqId'
 
-const app: Express = express()
+const app = express()
 
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: 'Too many requests from this IP, please try again after 15 minutes',
-  }),
-)
+app.use(generateReqId)
 app.set('query parser', 'extended')
 app.use(
   cors({
     credentials: true,
     origin: process.env.WEB_ORIGIN,
+    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'X-CSRF-Token'],
   }),
 )
 app.use(express.json())
@@ -59,7 +53,24 @@ app.use(
   }),
 )
 
-app.use(morgan('combined'))
+app.use(
+  morgan((tokens, req, res) => {
+    return JSON.stringify({
+      // --- IDENTIFICATION & TRACING (LEFT) ---
+      t: new Date().toISOString(),
+      lvl: res.statusCode >= 400 ? 'WARN' : 'INFO',
+      id: res.locals.requestId,
+
+      // --- ACTION & RESPONSE (MIDDLE) ---
+      m: tokens.method(req, res),
+      s: Number(tokens.status(req, res)),
+
+      // --- TARGET & PERFORMANCE (RIGHT) ---
+      p: req.baseUrl + req.path,
+      ms: Number(tokens['response-time'](req, res)),
+    })
+  }),
+)
 
 app.use(router())
 app.use(notFoundHandler)

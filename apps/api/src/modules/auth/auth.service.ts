@@ -2,10 +2,10 @@ import { verify } from 'argon2'
 import { ApiError } from '@/classes/ApiError'
 import { dbClient } from '@/db/client'
 import { LoginBody, LoginDataResponse } from '@monolith-code-architecture/types'
+import { omit } from 'es-toolkit'
 
 const authService = () => ({
   login: async (body?: LoginBody): Promise<LoginDataResponse['admin']> => {
-    if (!body) throw new ApiError('Missing body', 403, 'FORBIDDEN')
     const admin = await dbClient.query.adminTable.findFirst({
       columns: {
         displayName: true,
@@ -16,7 +16,7 @@ const authService = () => ({
         deletedAt: true,
       },
       where: {
-        username: body.username,
+        username: body?.username,
       },
       with: {
         permissions: {
@@ -27,11 +27,22 @@ const authService = () => ({
         },
       },
     })
-    if (!admin) throw new ApiError('Admin not found', 404, 'NOT FOUND')
-    if (!admin.isActive) throw new ApiError('Admin not activated', 403, 'FORBIDDEN')
-    if (!!admin.deletedAt) throw new ApiError('Admin was deleted', 410, 'GONE')
-    const isVerified = await verify(admin.password, body.password)
-    if (!isVerified) throw new ApiError('Not verified', 403, 'FORBIDDEN')
+
+    // trade-off: timing oracle = perbedaan waktu respons bisa memberi petunjuk tentang keadaan API.
+    const isAccountAvalable = body && !!admin && admin.isActive && !admin.deletedAt
+    const sourcePassword = admin?.password ?? process.env.PASSWORD_DUMMY_HASH!
+    const isVerified = await verify(sourcePassword, body?.password || '')
+    if (!isAccountAvalable || !isVerified) {
+      console.error({
+        timestamp: new Date().getUTCDate(),
+        message: 'Login Failed',
+        data: {
+          admin: admin ? omit(admin, ['password']) : {},
+        },
+        code: 401,
+      })
+      throw new ApiError('Check your username/password and try again.', 401, 'UNAUTORIZED')
+    }
     return {
       id: admin.id,
       displayName: admin.displayName,

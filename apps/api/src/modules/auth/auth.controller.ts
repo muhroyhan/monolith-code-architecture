@@ -8,6 +8,7 @@ import {
   adminPermissionCookieName,
   superadminCookieName,
 } from '@monolith-code-architecture/constants'
+import crypto from 'node:crypto'
 
 const authController = () => {
   const service = authService()
@@ -38,12 +39,13 @@ const authController = () => {
           isSuper: admin.isSuper,
           permissions: admin.permissions.map((item) => `${item.featureName}:${item.access}`),
         }
-
+        const csrfToken = crypto.randomBytes(32).toString('base64url')
+        req.session.csrfToken = csrfToken
         req.session.save((saveErr) => {
           if (saveErr) throw new ApiError(saveErr, 403, 'FORBIDDEN')
           res.status(200).json({
             success: true,
-            data: { admin },
+            data: { admin, csrfToken },
           })
         })
       })
